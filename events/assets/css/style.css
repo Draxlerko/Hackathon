@@ -1,0 +1,126 @@
+body {
+    margin: 0;
+    padding: 0;
+}
+
+/* Increment minutes */
+.bootstrap-datetimepicker-widget .timepicker .timepicker-picker .btn[data-action="incrementMinutes"] {
+    background: url('../icons/arrow_up.png') no-repeat center center;
+    background-size: contain;
+    width: 50px; 
+    height: 30px;
+    border: none;
+    text-indent: -9999px;
+    cursor: pointer;
+}
+
+/* Hover efekt pre Increment minutes */
+.bootstrap-datetimepicker-widget .timepicker .timepicker-picker .btn[data-action="incrementMinutes"]:hover {
+    background-color: rgba(0, 0, 0, 0.1); /* Jemné zatmavenie pozadia */
+    border-radius: 5px; /* Zaoblené rohy pre lepší vzhľad */
+}
+
+/* Decrement minutes */
+.bootstrap-datetimepicker-widget .timepicker .timepicker-picker .btn[data-action="decrementMinutes"] {
+    background: url('../icons/arrow_down.png') no-repeat center center;
+    background-size: contain;
+    width: 50px; 
+    height: 30px;
+    border: none;
+    text-indent: -9999px;
+    cursor: pointer;
+}
+
+/* Hover efekt pre Decrement minutes */
+.bootstrap-datetimepicker-widget .timepicker .timepicker-picker .btn[data-action="decrementMinutes"]:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+}
+
+/* Increment hours */
+.bootstrap-datetimepicker-widget .timepicker .timepicker-picker .btn[data-action="incrementHours"] {
+    background: url('../icons/arrow_up.png') no-repeat center center;
+    background-size: contain;
+    width: 50px; 
+    height: 30px;
+    border: none;
+    text-indent: -9999px;
+    cursor: pointer;
+}
+
+/* Hover efekt pre Increment hours */
+.bootstrap-datetimepicker-widget .timepicker .timepicker-picker .btn[data-action="incrementHours"]:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+}
+
+/* Decrement hours */
+.bootstrap-datetimepicker-widget .timepicker .timepicker-picker .btn[data-action="decrementHours"] {
+    background: url('../icons/arrow_down.png') no-repeat center center;
+    background-size: contain;
+    width: 50px; 
+    height: 30px;
+    border: none;
+    text-indent: -9999px;
+    cursor: pointer;
+}
+
+/* Hover efekt pre Decrement hours */
+.bootstrap-datetimepicker-widget .timepicker .timepicker-picker .btn[data-action="decrementHours"]:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+}
+
+/* Increment seconds */
+.bootstrap-datetimepicker-widget .timepicker .timepicker-picker .btn[data-action="incrementSeconds"] {
+    background: url('../icons/arrow_up.png') no-repeat center center;
+    background-size: contain;
+    width: 50px; 
+    height: 30px;
+    border: none;
+    text-indent: -9999px;
+    cursor: pointer;
+}
+
+/* Hover efekt pre Increment seconds */
+.bootstrap-datetimepicker-widget .timepicker .timepicker-picker .btn[data-action="incrementSeconds"]:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+}
+
+/* Decrement seconds */
+.bootstrap-datetimepicker-widget .timepicker .timepicker-picker .btn[data-action="decrementSeconds"] {
+    background: url('../icons/arrow_down.png') no-repeat center center;
+    background-size: contain;
+    width: 50px; 
+    height: 30px;
+    border: none;
+    text-indent: -9999px;
+    cursor: pointer;
+}
+
+/* Hover efekt pre Decrement seconds */
+.bootstrap-datetimepicker-widget .timepicker .timepicker-picker .btn[data-action="decrementSeconds"]:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+}
+
+.bootstrap-datetimepicker-widget .timepicker .timepicker-picker .btn[data-action="selectTime"] {
+    background: url('../icons/schedule.png') no-repeat center center;
+    background-size: contain;
+    width: 50px; 
+    height: 30px;
+    border: none;
+    text-indent: -9999px;
+    cursor: pointer;
+}
+
+/* Ak chcete len upraviť text, môžete použiť toto: */
+    .bootstrap-datetimepicker-widget .timepicker .timepicker-picker .timepicker-title {
+    font-size: 16px;
+    font-weight: bold;
+    color: #333; /* Farba textu */
+    text-align: center;
+    margin-bottom: 10px;
+}
+

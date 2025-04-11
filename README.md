@@ -1,2 +1,2 @@
 # hecaton
-Hecaton web
+Hackathon web

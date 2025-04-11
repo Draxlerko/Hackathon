@@ -1,8 +1,8 @@
 <?php
-require 'db.php'; // Pripojenie k databáze cez db.php
+require 'cabinet/db.php'; // Pripojenie k databáze cez db.php
 
 // Načíta hlasovania z DB
-$sql = "SELECT id, nazov AS title FROM hlasovanie";
+$sql = "SELECT id, nazov AS title, info FROM hlasovanie";
 $result = $conn->query($sql);
 
 $votings = [];
@@ -56,14 +56,13 @@ if ($result->num_rows > 0) {
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
-            height: 100vh;
         }
         .menu-container {
             display: flex;
             gap: 20px;
             flex-wrap: wrap;
             justify-content: center;
+            margin-top: 50px;
         }
         .voting-box {
             width: 200px;
@@ -96,6 +95,34 @@ if ($result->num_rows > 0) {
             font-size: 18px;
             color: #333;
         }
+        .info-button {
+            margin-top: 10px;
+            padding: 10px 15px;
+            font-size: 14px;
+            color: #fff;
+            background-color: #007BFF;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .info-button:hover {
+            background-color: #0056b3;
+        }
+        .info-section {
+            display: none;
+            margin-top: 20px;
+            width: 80%;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .info-section h2 {
+            margin-top: 0;
+            font-size: 24px;
+            color: #333;
+        }
     </style>
 </head>
 <body>
@@ -104,11 +131,37 @@ if ($result->num_rows > 0) {
     </div>
     <div class="menu-container">
         <?php foreach ($votings as $voting): ?>
-            <div class="voting-box" onclick="location.href='voting.php?id=<?php echo $voting['id']; ?>&title=<?php echo urlencode($voting['title']); ?>&voter_id=<?php echo $voter_id; ?>&voter_name=<?php echo urlencode($voter_name); ?>'">
-                <img src="<?php echo htmlspecialchars($voting['image']); ?>" alt="Obrázok">
-                <h3><?php echo htmlspecialchars($voting['title']); ?></h3>
+            <div>
+                <div class="voting-box" onclick="location.href='voting.php?id=<?php echo $voting['id']; ?>&title=<?php echo urlencode($voting['title']); ?>&voter_id=<?php echo $voter_id; ?>&voter_name=<?php echo urlencode($voter_name); ?>'">
+                    <img src="<?php echo htmlspecialchars($voting['image']); ?>" alt="Obrázok">
+                    <h3><?php echo htmlspecialchars($voting['title']); ?></h3>
+                </div>
+                <button class="info-button" onclick="scrollToInfo(<?php echo $voting['id']; ?>)">Ďalšie info</button>
             </div>
         <?php endforeach; ?>
     </div>
+    <div class="info-sections">
+        <?php foreach ($votings as $voting): ?>
+            <div id="info-section-<?php echo $voting['id']; ?>" class="info-section">
+                <h2>Ďalšie informácie pre: <?php echo htmlspecialchars($voting['title']); ?></h2>
+                <p><?php echo htmlspecialchars($voting['info']); ?></p>
+            </div>
+        <?php endforeach; ?>
+    </div>
+
+    <script>
+        function scrollToInfo(id) {
+            // Skryť všetky sekcie
+            const allSections = document.querySelectorAll('.info-section');
+            allSections.forEach(section => {
+                section.style.display = 'none';
+            });
+
+            // Zobraziť iba vybranú sekciu
+            const infoSection = document.getElementById(`info-section-${id}`);
+            infoSection.style.display = 'block';
+            infoSection.scrollIntoView({ behavior: 'smooth' });
+        }
+    </script>
 </body>
 </html>

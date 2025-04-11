@@ -43,27 +43,27 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <title>Prihlásenie</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background: linear-gradient(135deg, #74ebd5, #9face6);
             margin: 0;
             padding: 0;
+            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #3A59D1, #3D90D7); /* Rovnaké pozadie ako v cabinet_menu */
+            height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
         }
         .login-container {
             background: #fff;
             padding: 2rem;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            border-radius: 16px; /* Rovnaké zaoblenie ako v cabinet_menu */
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1); /* Rovnaký tieň ako v cabinet_menu */
             text-align: center;
             width: 100%;
             max-width: 400px;
         }
         .login-container h2 {
             margin-bottom: 1rem;
-            color: #333;
+            color: #3A59D1; /* Rovnaká farba ako v cabinet_menu */
         }
         .login-container label {
             display: block;
@@ -80,17 +80,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             font-size: 1rem;
         }
         .login-container button {
-            background: #74ebd5;
+            background: #3A59D1; /* Rovnaká farba tlačidla ako v cabinet_menu */
             color: #fff;
             border: none;
             padding: 0.8rem 1.5rem;
             font-size: 1rem;
-            border-radius: 5px;
+            border-radius: 8px; /* Rovnaké zaoblenie ako v cabinet_menu */
             cursor: pointer;
-            transition: background 0.3s ease;
+            transition: background 0.3s ease, transform 0.2s ease;
         }
         .login-container button:hover {
-            background: #9face6;
+            background: #2f47aa; /* Hover efekt ako v cabinet_menu */
+            transform: translateY(-3px);
         }
         .error {
             color: red;

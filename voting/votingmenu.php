@@ -1,5 +1,5 @@
 <?php
-require 'cabinet/db.php'; // Pripojenie k databáze cez db.php
+require '../cabinet/db.php'; // Pripojenie k databáze cez db.php
 
 // Načíta hlasovania z DB
 $sql = "SELECT id, nazov AS title, info FROM hlasovanie";

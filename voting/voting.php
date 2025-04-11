@@ -1,6 +1,7 @@
 <?php
 
-require 'cabinet/db.php'; // Pripojenie k databáze
+require '../cabinet/db.php'; // Pripojenie k databáze cez db.php
+
 
 // Získanie parametrov z URL
 $id = $_GET['id'] ?? null;

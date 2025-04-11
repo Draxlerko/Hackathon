@@ -119,6 +119,7 @@ if (isset($_GET['edit'])) {
             border-radius: 16px;
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
             padding: 20px;
+            position: relative; /* Nastavenie relatívnej pozície pre umiestnenie tlačidla */
         }
 
         form {
@@ -328,23 +329,23 @@ if (isset($_GET['edit'])) {
         }
 
         .back-button {
-            display: inline-block;
-            margin-bottom: 20px;
-            padding: 10px 20px;
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            padding: 5px 10px;
             background-color: #3A59D1;
             color: white;
             text-decoration: none;
-            font-size: 1rem;
+            font-size: 0.9rem;
             font-weight: bold;
-            border-radius: 8px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
             transition: background-color 0.3s ease, transform 0.2s ease;
-            text-align: center;
         }
 
         .back-button:hover {
             background-color: #2f47aa;
-            transform: translateY(-3px);
+            transform: translateY(-2px);
         }
     </style>
 </head>
@@ -353,7 +354,7 @@ if (isset($_GET['edit'])) {
     <div class="container">
 
         <!-- Tlačidlo na návrat -->
-        <a href="cabinet_menu.php" class="back-button">← Späť na menu</a>
+        <a href="cabinet_menu.php" class="back-button">← Späť</a>
 
         <!-- Formulár na tvorbu udalosti -->
         <form method="post">

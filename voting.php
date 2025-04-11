@@ -14,7 +14,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($selectedOption && $voterName) {
         $message = "Ďakujeme za váš hlas, $voterName! Hlasovali ste o Problematike, $question a zahlasovali ste za moznost: $selectedOption.";
     } else {
-        $error = "Musíte zvoliť možnosť.";
+        $error = "Musíte zvoliť jednu možnosť.";
     }
 }
 ?>
@@ -82,7 +82,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             background-color: rgb(37, 80, 86);
         }
         .message {
-            margin-top: 20px;
+            margin-top: px;
             font-size: 18px;
             color: rgb(51, 110, 117);
         }

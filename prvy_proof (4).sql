@@ -220,6 +220,26 @@ INSERT INTO `stav` (`id`, `nazov_stavu`) VALUES
 (9, 'Zverejnený'),
 (10, 'Zrušený');
 
+-- --------------------------------------------------------
+
+--
+-- Štruktúra tabuľky pre tabuľku `admin`
+--
+
+CREATE TABLE `admin` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `meno` varchar(100) NOT NULL,
+  `heslo` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Sťahujem dáta pre tabuľku `admin`
+--
+
+INSERT INTO `admin` (`meno`, `heslo`) VALUES
+('admin', SHA2('Heslo', 256)); -- Heslo je zahashované pomocou SHA-256
+
 --
 -- Kľúče pre exportované tabuľky
 --

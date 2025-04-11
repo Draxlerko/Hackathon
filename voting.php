@@ -1,18 +1,25 @@
 <?php
 
-$voter = "Občan obce Čierne"; 
-$question = "Voľba o nové chodníky"; 
-$options = ["Áno", "Nie"]; 
+
+$id = $_GET['id'] ?? null;
+$title = $_GET['title'] ?? null;
+$voter = $_GET['voter'] ?? null;
+
+if (!$id || !$title || !$voter) {
+    die("Chyba: Neplatné údaje o hlasovaní.");
+}
+
+
+$options = ["Áno", "Nie"];
 
 
 $message = "";
 $error = "";
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $selectedOption = $_POST['vote'] ?? null;
-    $voterName = $_POST['voter'] ?? null;
 
-    if ($selectedOption && $voterName) {
-        $message = "Ďakujeme za váš hlas, $voterName! Hlasovali ste o Problematike, $question a zahlasovali ste za moznost: $selectedOption.";
+    if ($selectedOption) {
+        $message = "Ďakujeme za váš hlas, $voter! Hlasovali ste za možnosť: $selectedOption v hlasovaní: $title.";
     } else {
         $error = "Musíte zvoliť jednu možnosť.";
     }
@@ -24,7 +31,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hlasovanie</title>
+    <title><?php echo htmlspecialchars($title); ?></title>
     <style>
         body {
             display: flex;
@@ -82,7 +89,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             background-color: rgb(37, 80, 86);
         }
         .message {
-            margin-top: px;
+            margin-top: 20px;
             font-size: 18px;
             color: rgb(51, 110, 117);
         }
@@ -99,8 +106,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <p class="message"><?php echo htmlspecialchars($message); ?></p>
         <?php else: ?>
             <h1>Hlasovanie</h1>
+            <p><strong><?php echo htmlspecialchars($title); ?></strong></p>
             <p><strong>Hlasujúci:</strong> <?php echo htmlspecialchars($voter); ?></p>
-            <p><strong>Podnet:</strong> <?php echo htmlspecialchars($question); ?></p>
+            
             <form action="" method="POST">
                 <?php foreach ($options as $index => $option): ?>
                     <div class="option-container">
@@ -111,6 +119,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <?php if ($error): ?>
                     <p class="error"><?php echo htmlspecialchars($error); ?></p>
                 <?php endif; ?>
+                <input type="hidden" name="title" value="<?php echo htmlspecialchars($title); ?>">
                 <input type="hidden" name="voter" value="<?php echo htmlspecialchars($voter); ?>">
                 <button type="submit">Hlasovať</button>
             </form>

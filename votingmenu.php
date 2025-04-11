@@ -1,5 +1,6 @@
 <?php
 
+// Statické údaje o hlasovaniach
 $votings = [
     [
         "id" => 1,
@@ -22,6 +23,9 @@ $votings = [
         "image" => "images/osvetlenie.jpg"
     ]
 ];
+
+// Statické meno hlasujúceho
+$voter = "Ján Novák";
 ?>
 
 <!DOCTYPE html>
@@ -78,7 +82,7 @@ $votings = [
 <body>
     <div class="menu-container">
         <?php foreach ($votings as $voting): ?>
-            <div class="voting-box" onclick="location.href='voting.php?id=<?php echo $voting['id']; ?>'">
+            <div class="voting-box" onclick="location.href='voting.php?id=<?php echo $voting['id']; ?>&title=<?php echo urlencode($voting['title']); ?>&voter=<?php echo urlencode($voter); ?>'">
                 <img src="<?php echo htmlspecialchars($voting['image']); ?>" alt="Obrázok">
                 <h3><?php echo htmlspecialchars($voting['title']); ?></h3>
             </div>

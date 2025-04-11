@@ -5,6 +5,7 @@ $id = $_GET['id'] ?? null;
 $title = $_GET['title'] ?? null;
 $voter = $_GET['voter'] ?? null;
 
+
 if (!$id || !$title || !$voter) {
     die("Chyba: Neplatné údaje o hlasovaní.");
 }
@@ -12,14 +13,23 @@ if (!$id || !$title || !$voter) {
 
 $options = ["Áno", "Nie"];
 
-
 $message = "";
 $error = "";
+$results = null;
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $selectedOption = $_POST['vote'] ?? null;
 
     if ($selectedOption) {
-        $message = "Ďakujeme za váš hlas, $voter! Hlasovali ste za možnosť: $selectedOption v hlasovaní: $title.";
+        $message = "Ďakujeme za váš hlas, $voter! Hlasovali ste za možnosť: $selectedOption.";
+        
+       
+        $percentYes = rand(40, 60); 
+        $percentNo = 100 - $percentYes; 
+        $results = [
+            "Áno" => $percentYes,
+            "Nie" => $percentNo
+        ];
     } else {
         $error = "Musíte zvoliť jednu možnosť.";
     }
@@ -54,7 +64,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         .option-container {
             display: flex;
             align-items: center;
-            margin: 10px 0;
+            margin: 20px 0;
         }
         .option-container input[type="radio"] {
             display: none;
@@ -75,6 +85,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             color: white;
             border-color: rgb(51, 110, 117);
         }
+        .progress-bar-container {
+            margin: 20px 0;
+            position: relative;
+        }
+        .progress-bar-container:not(:last-child)::after {
+            content: "";
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            background-color: #ccc;
+        }
+        .progress-bar {
+            height: 20px;
+            background-color: rgb(51, 110, 117);
+            border-radius: 5px;
+            text-align: center;
+            color: white;
+            line-height: 20px;
+            padding: 5px;
+            font-size: 14px;
+        }
         button {
             background-color: rgb(51, 110, 117);
             color: white;
@@ -91,7 +124,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         .message {
             margin-top: 20px;
             font-size: 18px;
-            color: rgb(51, 110, 117);
+            color: green;
         }
         .error {
             margin-top: 10px;
@@ -104,11 +137,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <div class="voting-container">
         <?php if ($message): ?>
             <p class="message"><?php echo htmlspecialchars($message); ?></p>
+            <?php if ($results): ?>
+                <?php foreach ($results as $option => $percent): ?>
+                    <div class="progress-bar-container">
+                        <div class="progress-bar" style="width: <?php echo $percent; ?>%;"><?php echo $percent; ?>%</div>
+                        <p><strong><?php echo htmlspecialchars($option); ?></strong></p>
+                    </div>
+                <?php endforeach; ?>
+            <?php endif; ?>
+            <button onclick="location.href='votingmenu.php'">Späť</button>
         <?php else: ?>
-            <h1>Hlasovanie</h1>
-            <p><strong><?php echo htmlspecialchars($title); ?></strong></p>
+            <h1><?php echo htmlspecialchars($title); ?></h1>
             <p><strong>Hlasujúci:</strong> <?php echo htmlspecialchars($voter); ?></p>
-            
             <form action="" method="POST">
                 <?php foreach ($options as $index => $option): ?>
                     <div class="option-container">

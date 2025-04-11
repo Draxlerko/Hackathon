@@ -1,18 +1,50 @@
 <?php
 
+require 'db.php'; // Pripojenie k databáze
 
+// Získanie parametrov z URL
 $id = $_GET['id'] ?? null;
 $title = $_GET['title'] ?? null;
-$voter = $_GET['voter'] ?? null;
+$voter_id = $_GET['voter_id'] ?? null;
 
-
-if (!$id || !$title || !$voter) {
+// Kontrola, či sú parametre nastavené
+if (!$id || !$title || !$voter_id) {
     die("Chyba: Neplatné údaje o hlasovaní.");
 }
 
+// Načítanie mena prihláseného používateľa z databázy
+$sql = "SELECT meno FROM obcan WHERE id = ?";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("i", $voter_id);
+$stmt->execute();
+$result = $stmt->get_result();
 
-$options = ["Áno", "Nie"];
+if ($result->num_rows > 0) {
+    $voter = $result->fetch_assoc();
+    $voter_name = $voter['meno'];
+} else {
+    die("Chyba: Používateľ s daným ID neexistuje.");
+}
 
+// Načítanie možností hlasovania z databázy
+$sql = "SELECT moznost1, moznost2, moznost3, moznost4 FROM hlasovanie WHERE id = ?";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("i", $id);
+$stmt->execute();
+$result = $stmt->get_result();
+
+$options = [];
+if ($row = $result->fetch_assoc()) {
+    foreach (['moznost1', 'moznost2', 'moznost3', 'moznost4'] as $key) {
+        if (!empty($row[$key])) {
+            $options[] = $row[$key];
+        }
+    }
+} else {
+    die("Hlasovanie s daným ID neexistuje.");
+}
+
+// Spracovanie hlasovania
 $message = "";
 $error = "";
 $results = null;
@@ -21,19 +53,39 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $selectedOption = $_POST['vote'] ?? null;
 
     if ($selectedOption) {
-        $message = "Ďakujeme za váš hlas, $voter! Hlasovali ste za možnosť: $selectedOption.";
-        
-       
-        $percentYes = rand(40, 60); 
-        $percentNo = 100 - $percentYes; 
-        $results = [
-            "Áno" => $percentYes,
-            "Nie" => $percentNo
-        ];
+        // Uloženie hlasu do databázy
+        $sql = "INSERT INTO hlasovanie_vysledky (id_hlasovanie, id_obcan, moznost) VALUES (?, ?, ?)";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("iis", $id, $voter_id, $selectedOption);
+        $stmt->execute();
+
+        $message = "Ďakujeme za váš hlas! Hlasovali ste za možnosť: $selectedOption.";
     } else {
         $error = "Musíte zvoliť jednu možnosť.";
     }
 }
+
+// Načítanie výsledkov hlasovania z databázy
+$sql = "SELECT moznost, COUNT(*) AS pocet FROM hlasovanie_vysledky WHERE id_hlasovanie = ? GROUP BY moznost";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("i", $id);
+$stmt->execute();
+$result = $stmt->get_result();
+
+$results = [];
+$totalVotes = 0;
+while ($row = $result->fetch_assoc()) {
+    $results[$row['moznost']] = $row['pocet'];
+    $totalVotes += $row['pocet'];
+}
+
+// Výpočet percent
+if ($totalVotes > 0) {
+    foreach ($results as $option => $count) {
+        $results[$option] = round(($count / $totalVotes) * 100);
+    }
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -64,7 +116,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         .option-container {
             display: flex;
             align-items: center;
-            margin: 20px 0;
+            margin: 10px 0;
         }
         .option-container input[type="radio"] {
             display: none;
@@ -105,7 +157,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             text-align: center;
             color: white;
             line-height: 20px;
-            padding: 5px;
             font-size: 14px;
         }
         button {
@@ -148,7 +199,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <button onclick="location.href='votingmenu.php'">Späť</button>
         <?php else: ?>
             <h1><?php echo htmlspecialchars($title); ?></h1>
-            <p><strong>Hlasujúci:</strong> <?php echo htmlspecialchars($voter); ?></p>
+            <p><strong>Hlasujúci:</strong> <?php echo htmlspecialchars($voter_name); ?></p>
             <form action="" method="POST">
                 <?php foreach ($options as $index => $option): ?>
                     <div class="option-container">
@@ -159,8 +210,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <?php if ($error): ?>
                     <p class="error"><?php echo htmlspecialchars($error); ?></p>
                 <?php endif; ?>
-                <input type="hidden" name="title" value="<?php echo htmlspecialchars($title); ?>">
-                <input type="hidden" name="voter" value="<?php echo htmlspecialchars($voter); ?>">
                 <button type="submit">Hlasovať</button>
             </form>
         <?php endif; ?>

@@ -91,6 +91,10 @@
             <div class="menu-item-icon"></div>
             <span>Oznamy a udalosti</span>
         </a>
+        <a href="suggestions.php" class="menu-item">
+            <div class="menu-item-icon"></div>
+            <span>Podnety</span>
+        </a>
         <a href="index.php" class="back-button">← Späť na hlavnú stránku</a>
     </div>
 </body>

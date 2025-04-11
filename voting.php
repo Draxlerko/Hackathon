@@ -1,20 +1,20 @@
 <?php
-// Statické údaje o hlasovaní
-$voter = "Obcan obce cierne"; // Meno hlasujúceho
-$question = "Volba o nove chodniky"; // Otázka na hlasovanie
-$options = ["Ano","nie"]; // Možnosti hlasovania
 
-// Spracovanie hlasovania
+$voter = "Občan obce Čierne"; 
+$question = "Voľba o nové chodníky"; 
+$options = ["Áno", "Nie"]; 
+
+
 $message = "";
+$error = "";
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $selectedOption = $_POST['vote'] ?? null;
     $voterName = $_POST['voter'] ?? null;
 
     if ($selectedOption && $voterName) {
-        // Tu môžete pridať logiku na uloženie hlasu do databázy alebo súboru
-        $message = "Ďakujeme za váš hlas, $voterName! Vybrali ste ste si v volbe,$question: $selectedOption.";
+        $message = "Ďakujeme za váš hlas, $voterName! Hlasovali ste o Problematike, $question a zahlasovali ste za moznost: $selectedOption.";
     } else {
-        $message = "Nastala chyba pri spracovaní vášho hlasu.";
+        $error = "Musíte zvoliť možnosť.";
     }
 }
 ?>
@@ -33,7 +33,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             height: 100vh;
             margin: 0;
             font-family: Arial, sans-serif;
-            background-color:rgb(37, 80, 86);
+            background-color: rgb(37, 80, 86);
         }
         .voting-container {
             text-align: center;
@@ -86,6 +86,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             font-size: 18px;
             color: rgb(51, 110, 117);
         }
+        .error {
+            margin-top: 10px;
+            font-size: 16px;
+            color: red;
+        }
     </style>
 </head>
 <body>
@@ -99,15 +104,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <form action="" method="POST">
                 <?php foreach ($options as $index => $option): ?>
                     <div class="option-container">
-                        <input type="radio" id="option<?php echo $index; ?>" name="vote" value="<?php echo htmlspecialchars($option); ?>" required>
+                        <input type="radio" id="option<?php echo $index; ?>" name="vote" value="<?php echo htmlspecialchars($option); ?>">
                         <label for="option<?php echo $index; ?>"><?php echo htmlspecialchars($option); ?></label>
                     </div>
                 <?php endforeach; ?>
+                <?php if ($error): ?>
+                    <p class="error"><?php echo htmlspecialchars($error); ?></p>
+                <?php endif; ?>
                 <input type="hidden" name="voter" value="<?php echo htmlspecialchars($voter); ?>">
                 <button type="submit">Hlasovať</button>
             </form>
         <?php endif; ?>
-        
     </div>
 </body>
 </html>

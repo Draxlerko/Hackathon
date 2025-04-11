@@ -96,21 +96,21 @@ if ($totalVotes > 0) {
     <title><?php echo htmlspecialchars($title); ?></title>
     <style>
         body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #3A59D1, #3D90D7);
+            height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background-color: rgb(37, 80, 86);
         }
         .voting-container {
             text-align: center;
-            border: 2px solid #ccc;
-            border-radius: 10px;
+            border-radius: 16px;
             padding: 20px;
-            background-color: #fff;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            background-color: white;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
             width: 400px;
         }
         .option-container {
@@ -133,9 +133,9 @@ if ($totalVotes > 0) {
             text-align: left;
         }
         .option-container input[type="radio"]:checked + label {
-            background-color: rgb(51, 110, 117);
+            background-color: #3A59D1;
             color: white;
-            border-color: rgb(51, 110, 117);
+            border-color: #3A59D1;
         }
         .progress-bar-container {
             margin: 20px 0;
@@ -152,7 +152,7 @@ if ($totalVotes > 0) {
         }
         .progress-bar {
             height: 20px;
-            background-color: rgb(51, 110, 117);
+            background-color: #3A59D1;
             border-radius: 5px;
             text-align: center;
             color: white;
@@ -160,17 +160,18 @@ if ($totalVotes > 0) {
             font-size: 14px;
         }
         button {
-            background-color: rgb(51, 110, 117);
+            background-color: #3A59D1;
             color: white;
             border: none;
             padding: 10px 20px;
-            border-radius: 5px;
+            border-radius: 10px;
             cursor: pointer;
             font-size: 16px;
             margin-top: 20px;
+            transition: background-color 0.3s ease;
         }
         button:hover {
-            background-color: rgb(37, 80, 86);
+            background-color: #2f47aa;
         }
         .message {
             margin-top: 20px;

@@ -49,27 +49,36 @@ if ($result->num_rows > 0) {
     <title>Voting Menu</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
             margin: 0;
             padding: 0;
+            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #3A59D1, #3D90D7);
+            min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
+            justify-content: flex-start;
+        }
+        .voter-info {
+            margin-top: 20px;
+            font-size: 18px;
+            color: white;
+            text-align: center;
         }
         .menu-container {
             display: flex;
             gap: 20px;
             flex-wrap: wrap;
             justify-content: center;
-            margin-top: 50px;
+            margin-top: 30px;
+            padding: 20px;
         }
         .voting-box {
             width: 200px;
             height: 250px;
             border-radius: 15px;
-            background-color: #fff;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            background-color: white;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
             text-align: center;
             padding: 15px;
             cursor: pointer;
@@ -77,7 +86,7 @@ if ($result->num_rows > 0) {
         }
         .voting-box:hover {
             transform: translateY(-5px);
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
         }
         .voting-box img {
             width: 100%;
@@ -90,33 +99,35 @@ if ($result->num_rows > 0) {
             font-size: 18px;
             color: #333;
         }
-        .voter-info {
-            margin-bottom: 20px;
-            font-size: 18px;
-            color: #333;
-        }
         .info-button {
             margin-top: 10px;
             padding: 10px 15px;
             font-size: 14px;
-            color: #fff;
-            background-color: #007BFF;
-            border: none;
+            font-weight: bold;
+            color: #3A59D1;
+            background-color:rgb(255, 255, 255);
+            border: 2px solid black;;
             border-radius: 5px;
             cursor: pointer;
             transition: background-color 0.3s ease;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            
         }
         .info-button:hover {
-            background-color: #0056b3;
+            transform: translateY(-5px);
+            color: black;
+            background-color:rgb(125, 151, 254);
         }
         .info-section {
             display: none;
             margin-top: 20px;
             width: 80%;
-            background-color: #fff;
+            background-color: white;
             padding: 20px;
             border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
         }
         .info-section h2 {
             margin-top: 0;
@@ -136,7 +147,7 @@ if ($result->num_rows > 0) {
                     <img src="<?php echo htmlspecialchars($voting['image']); ?>" alt="Obrázok">
                     <h3><?php echo htmlspecialchars($voting['title']); ?></h3>
                 </div>
-                <button class="info-button" onclick="scrollToInfo(<?php echo $voting['id']; ?>)">Ďalšie info</button>
+                <button class="info-button" onclick="scrollToInfo(<?php echo $voting['id']; ?>)">Viac</button>
             </div>
         <?php endforeach; ?>
     </div>

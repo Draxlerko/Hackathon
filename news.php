@@ -18,12 +18,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $nazov = trim($_POST['nazov']);
     $typ = $_POST['typ'];
     $text = trim($_POST['text']);
-    $datum = $_POST['datum'];
+    $datum_od = $_POST['datum_od'];
+    $datum_do = $_POST['datum_do'];
     $id_obec = intval($_POST['id_obec']);
 
-    if (!empty($nazov) && !empty($typ) && !empty($text) && !empty($datum) && $id_obec > 0) {
-        $stmt = $conn->prepare("INSERT INTO news (typ, nazov, text, datum, id_obec) VALUES (?, ?, ?, ?, ?)");
-        $stmt->bind_param("ssssi", $typ, $nazov, $text, $datum, $id_obec);
+    if (!empty($nazov) && !empty($typ) && !empty($text) && !empty($datum_od) && !empty($datum_do) && $id_obec > 0) {
+        $stmt = $conn->prepare("INSERT INTO news (typ, nazov, text, datum_od, datum_do, id_obec) VALUES (?, ?, ?, ?, ?, ?)");
+        $stmt->bind_param("sssssi", $typ, $nazov, $text, $datum_od, $datum_do, $id_obec);
 
         if ($stmt->execute()) {
             $success = "✅ Úspešne uložené!";
@@ -147,8 +148,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <label><input type="radio" name="typ" value="udalosť"> Udalosť</label>
         </div>
 
-        <label for="datum">Dátum udalosti:</label>
-        <input type="date" id="datum" name="datum" required>
+        <label for="datum_od">Dátum od:</label>
+        <input type="date" id="datum_od" name="datum_od" required>
+
+        <label for="datum_do">Dátum do:</label>
+        <input type="date" id="datum_do" name="datum_do" required>
 
         <label for="id_obec">Obec:</label>
         <select id="id_obec" name="id_obec" required>

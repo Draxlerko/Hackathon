@@ -169,7 +169,7 @@ if (isset($_GET['id'])) {
             <?php else: ?>
                 <p>Zatiaľ neboli odovzdané žiadne hlasy.</p>
             <?php endif; ?>
-            <a href="votingvyledky.php" class="back-button">← Späť na výber</a>
+            <a href="votingcheck.php" class="back-button">← Späť na výber</a>
         </div>
     <?php endif; ?>
 </body>

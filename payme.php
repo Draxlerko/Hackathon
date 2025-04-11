@@ -1,31 +1,7 @@
 <?php
-
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "hackathon";
-
-$conn = new mysqli($servername, $username, $password, $dbname);
-
-if ($conn->connect_error) {
-    die("Chyba pripojenia: " . $conn->connect_error);
-}
-
-// Načítanie údajov z databázy
-$sql = "SELECT name, amount FROM payments WHERE id = 1"; // Príklad: načítanie údajov pre konkrétnu platbu
-$result = $conn->query($sql);
-
-if ($result->num_rows > 0) {
-    // Načítanie údajov
-    $row = $result->fetch_assoc();
-    $name = $row['name'];
-    $amount = $row['amount'];
-} else {
-    $name = "Neznáme meno";
-    $amount = 0;
-}
-
-$conn->close();
+// Statické údaje o platbe
+$name = "Ján Novák";
+$amount = 50.00; // Suma na zaplatenie v EUR
 ?>
 
 <!DOCTYPE html>

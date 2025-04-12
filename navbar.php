@@ -9,7 +9,7 @@
         <a href="about.php" class="navbar-link text-light" style="font-weight: 700;">O nás</a>
         <a href="contact.php" class="navbar-link text-light" style="font-weight: 700;">Úradné tlačivá</a>
         <a href="services.php" class="navbar-link text-light" style="font-weight: 700;">Podnety & Ankety</a>
-        <a href="cabinet/admin_login.php" class="navbar-link text-light" style="font-weight: 700;"><img src="assets/icon/user.png" alt="User" class="navbar-logo">Profil</a>
+        <a href="login/login.php" class="navbar-link text-light" style="font-weight: 700;"><img src="assets/icon/user.png" alt="User" class="navbar-logo">Profil</a>
     </div>
 </div>
 

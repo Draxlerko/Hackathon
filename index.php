@@ -1,8 +1,4 @@
 <?php
-session_start();
-
-$isLoggedIn = isset($_SESSION['user']); // Skontroluje, či je používateľ prihlásený
-
 include 'header.php';
 include 'navbar.php';
 
@@ -209,81 +205,11 @@ $daysInMonth = cal_days_in_month(CAL_GREGORIAN, $currentMonth, $currentYear);
         transform: translateY(1px); /* Jemný stlačený efekt */
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Zmenšený tieň pri kliknutí */
     }
-
-    /* Štýly pre modálne okno */
-    .modal {
-        display: none; /* Skryté pred zobrazením */
-        position: fixed;
-        z-index: 1000;
-        left: 0;
-        top: 0;
-        width: 100%;
-        height: 100%;
-        overflow: auto;
-        background-color: rgba(0, 0, 0, 0.5); /* Polopriehľadné pozadie */
-    }
-
-    .modal-content {
-        background-color: white;
-        margin: 15% auto;
-        padding: 20px;
-        border-radius: 10px;
-        width: 300px;
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-    }
-
-    .close {
-        color: #aaa;
-        float: right;
-        font-size: 28px;
-        font-weight: bold;
-        cursor: pointer;
-    }
-
-    .close:hover,
-    .close:focus {
-        color: black;
-        text-decoration: none;
-        cursor: pointer;
-    }
-
-    input[type="text"],
-    input[type="password"] {
-        width: 100%;
-        padding: 10px;
-        margin: 10px 0;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-    }
-
-    input[type="submit"] {
-        background-color: #3A59D1;
-        color: white;
-        border: none;
-        padding: 10px;
-        width: 100%;
-        border-radius: 5px;
-        cursor: pointer;
-        transition: background-color 0.3s ease;
-    }
-
-    input[type="submit"]:hover {
-        background-color: #2f47aa;
-    }
 </style><br>
 <div class="container">
     <div class="row">
         <div class="col-lg-6">
-            <div id="profileIcon">
-                <img src="path/to/user-icon.png" alt="Profil" style="cursor: pointer;">
-            </div>
 
-            <?php if ($isLoggedIn): ?>
-                <div class="profile-options">
-                    <a href="profile.php">Upraviť profil</a>
-                    <a href="login/logout.php">Odhlásiť sa</a>
-                </div>
-            <?php endif; ?>
         </div>
         <div class="col-lg-6">
 
@@ -392,23 +318,6 @@ $daysInMonth = cal_days_in_month(CAL_GREGORIAN, $currentMonth, $currentYear);
             </div>
         </div>
     </div><br><br><br>
-
-    <!-- Modálne okno -->
-    <div id="loginModal" class="modal">
-        <div class="modal-content">
-            <span class="close">&times;</span>
-            <h2>Prihlásenie</h2>
-            <form action="login/login.php" method="post">
-                <label for="username">Používateľské meno:</label>
-                <input type="text" id="username" name="username" required>
-                
-                <label for="password">Heslo:</label>
-                <input type="password" id="password" name="password" required>
-                
-                <input type="submit" value="Prihlásiť sa">
-            </form>
-        </div>
-    </div>
 
 </div>
 

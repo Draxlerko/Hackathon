@@ -15,5 +15,3 @@
     <title>Čierne</title>
 </head>
 <body>
-
- */

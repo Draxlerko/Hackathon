@@ -1,22 +1,22 @@
-<!-- filepath: c:\xampp\htdocs\hackathon\Hackathon\cabinet\admin_login.php -->
+
 <?php
 session_start();
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $servername = "localhost";
-    $username = "root"; // nastav meno svojho používateľa databázy
-    $password = ""; // nastav heslo pre svoju databázu
-    $dbname = "prvy_proof"; // názov tvojej databázy
+    $username = "root"; 
+    $password = ""; 
+    $dbname = "prvy_proof"; 
 
-    // Vytvorenie pripojenia
+    
     $conn = new mysqli($servername, $username, $password, $dbname);
 
-    // Skontroluj pripojenie
+   
     if ($conn->connect_error) {
         die("Connection failed: " . $conn->connect_error);
     }
 
-    // Bezpečné prihlásenie administrátora
+    
     $meno = $_POST['meno'];
     $heslo = $_POST['heslo'];
 
@@ -28,10 +28,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     if ($result->num_rows > 0) {
         $admin = $result->fetch_assoc();
-        // Overenie hesla
+        
         if (hash('sha256', $heslo) === $admin['heslo']) {
-            $_SESSION['admin'] = $admin; // Ulož prihláseného administrátora do session
-            header("Location: cabinet_menu.php"); // Presmeruj na menu
+            $_SESSION['admin'] = $admin; 
+            header("Location: cabinet_menu.php"); 
             exit;
         } else {
             $error = "Nesprávne meno alebo heslo!";
@@ -82,8 +82,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             color: #555;
         }
         .login-container input {
-            width: calc(100% - 20px); /* Zmenšenie šírky o 20px pre ľavý a pravý padding */
-            padding: 0.8rem 10px; /* Pridaný padding z pravej strany */
+            width: calc(100% - 20px); 
+            padding: 0.8rem 10px; 
             margin-bottom: 1rem;
             border: 1px solid #ccc;
             border-radius: 5px;

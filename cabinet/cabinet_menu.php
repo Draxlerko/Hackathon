@@ -95,7 +95,7 @@
             <div class="menu-item-icon"></div>
             <span>Podnety</span>
         </a>
-        <a href="votingmenu.php" class="menu-item">
+        <a href="votingcreate.php" class="menu-item"> <!-- Upravený odkaz -->
             <div class="menu-item-icon"></div>
             <span>Hlasovanie</span>
         </a>

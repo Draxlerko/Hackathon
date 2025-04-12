@@ -15,16 +15,18 @@ if ($result->num_rows > 0) {
 
 // Spracovanie formulára
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    if (isset($_POST['update_id'])) {
-        $update_id = intval($_POST['update_id']);
-        $nazov = trim($_POST['nazov']);
-        $typ = $_POST['typ'];
-        $text = trim($_POST['text']);
-        $datum_od = $_POST['datum_od'];
-        $datum_do = $_POST['datum_do'];
-        $id_obec = intval($_POST['id_obec']);
+    $nazov = trim($_POST['nazov']);
+    $typ = $_POST['typ'];
+    $text = trim($_POST['text']);
+    $datum_od = $_POST['datum_od'];
+    $datum_do = $_POST['datum_do'];
+    $id_obec = intval($_POST['id_obec']);
 
-        if (!empty($nazov) && !empty($typ) && !empty($text) && !empty($datum_od) && !empty($datum_do) && $id_obec > 0) {
+    // Kontrola, či sú všetky polia vyplnené
+    if (!empty($nazov) && !empty($typ) && !empty($text) && !empty($datum_od) && !empty($datum_do) && $id_obec > 0) {
+        // Ak ide o aktualizáciu udalosti
+        if (isset($_POST['update_id']) && !empty($_POST['update_id'])) {
+            $update_id = intval($_POST['update_id']);
             $update_query = "UPDATE news SET typ = ?, nazov = ?, text = ?, datum_od = ?, datum_do = ?, id_obec = ? WHERE id = ?";
             $stmt = $conn->prepare($update_query);
             $stmt->bind_param("sssssii", $typ, $nazov, $text, $datum_od, $datum_do, $id_obec, $update_id);
@@ -36,18 +38,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
             $stmt->close();
         } else {
-            $error = "❗ Vyplň všetky polia.";
-        }
-    } else {
-        $nazov = trim($_POST['nazov']);
-        $typ = $_POST['typ'];
-        $text = trim($_POST['text']);
-        $datum_od = $_POST['datum_od'];
-        $datum_do = $_POST['datum_do'];
-        $id_obec = intval($_POST['id_obec']);
-
-        if (!empty($nazov) && !empty($typ) && !empty($text) && !empty($datum_od) && !empty($datum_do) && $id_obec > 0) {
-            $stmt = $conn->prepare("INSERT INTO news (typ, nazov, text, datum_od, datum_do, id_obec) VALUES (?, ?, ?, ?, ?, ?)");
+            // Ak ide o pridanie novej udalosti
+            $insert_query = "INSERT INTO news (typ, nazov, text, datum_od, datum_do, id_obec) VALUES (?, ?, ?, ?, ?, ?)";
+            $stmt = $conn->prepare($insert_query);
             $stmt->bind_param("sssssi", $typ, $nazov, $text, $datum_od, $datum_do, $id_obec);
 
             if ($stmt->execute()) {
@@ -56,9 +49,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $error = "❌ Chyba pri ukladaní: " . $stmt->error;
             }
             $stmt->close();
-        } else {
-            $error = "❗ Vyplň všetky polia.";
         }
+    } else {
+        $error = "❗ Vyplň všetky polia.";
     }
 }
 

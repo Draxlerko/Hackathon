@@ -110,7 +110,10 @@ INSERT INTO `news` (`id`, `typ`, `nazov`, `text`, `datum_od`, `datum_do`, `id_ob
 (15, 'udalosť', 'Uprava kostolnych hodin', 'zmeni sa to z 18.00 na 19.00', '2025-04-12', '2025-04-13', 1),
 (16, 'udalosť', 'Uprava kostolnych hodin', 'zmeni sa to z 18.00 na 19.00', '2025-04-12', '2025-04-13', 1),
 (17, 'športová udalosť', 'beh', 'beh', '2025-04-12', '2025-04-12', 1),
-(18, 'hudba', 'pride mikulas', 'gckvvuzv', '2025-04-27', '2025-04-27', 1);
+(18, 'zmena', 'pride mikulas', 'gckvvuzv', '2025-04-27', '2025-04-27', 1);
+(20, 'zmena', 'pride mikulas', 'gckvvuzv', '2025-04-27', '2025-04-27', 1);
+(21, 'zmena', 'pride mikulas', 'gckvvuzv', '2025-04-27', '2025-04-27', 1);
+(22, 'zmena', 'pride mikulas', 'gckvvuzv', '2025-04-27', '2025-04-27', 1);
 
 -- --------------------------------------------------------
 

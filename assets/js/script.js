@@ -31,3 +31,26 @@ document.querySelectorAll('.filter-btn').forEach(button => {
             });
         });
     });
+
+
+    // Získanie modálneho okna a tlačidla
+    const modal = document.getElementById("loginModal");
+    const profileIcon = document.getElementById("profileIcon");
+    const closeBtn = document.querySelector(".close");
+
+    // Zobrazenie modálneho okna po kliknutí na ikonu používateľa
+    profileIcon.addEventListener("click", () => {
+        modal.style.display = "block";
+    });
+
+    // Skrytie modálneho okna po kliknutí na "X"
+    closeBtn.addEventListener("click", () => {
+        modal.style.display = "none";
+    });
+
+    // Skrytie modálneho okna po kliknutí mimo obsahu
+    window.addEventListener("click", (event) => {
+        if (event.target === modal) {
+            modal.style.display = "none";
+        }
+    });

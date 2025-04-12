@@ -134,7 +134,7 @@ $stmt->close();
             position: absolute;
             top: 15px;
             right: 15px;
-            background-color:rgb(97, 181, 7);
+            background-color:rgb(0, 0, 0);
             color: white;
             border: none;
             padding: 5px 10px;
@@ -146,7 +146,7 @@ $stmt->close();
         }
 
         .delete-button:hover {
-            background-color: #C9302C;
+            background-color:rgb(65, 255, 2);
             transform: translateY(-3px);
         }
 
@@ -189,7 +189,7 @@ $stmt->close();
                         <h3><?= htmlspecialchars(ucfirst($recenzia['typ_osoby'])) ?></h3>
                         <form method="post" style="display: inline;">
                             <input type="hidden" name="delete_id" value="<?= $recenzia['id'] ?>">
-                            <button type="submit" class="delete-button">Prečítané</button>
+                            <button type="submit" class="delete-button">Oznacit ako prečítané</button>
                         </form>
                     </div>
                     <div class="review-body">

@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sekretariát</title>
+    <title>Menu</title>
     <style>
         body {
             margin: 0;
@@ -86,7 +86,7 @@
 </head>
 <body>
     <div class="menu-container">
-        <div class="menu-title">Sekretariát</div>
+        <div class="menu-title">MENU</div>
         <a href="news.php" class="menu-item">
             <div class="menu-item-icon"></div>
             <span>Oznamy a udalosti</span>

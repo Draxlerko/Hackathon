@@ -2,7 +2,6 @@
 
 require '../cabinet/db.php'; // Pripojenie k databáze cez db.php
 
-
 // Získanie parametrov z URL
 $id = $_GET['id'] ?? null;
 $title = $_GET['title'] ?? null;
@@ -25,6 +24,20 @@ if ($result->num_rows > 0) {
     $voter_name = $voter['meno'];
 } else {
     die("Chyba: Používateľ s daným ID neexistuje.");
+}
+
+// Kontrola, či už občan hlasoval
+$sql = "SELECT COUNT(*) AS hlasoval FROM hlasovanie_vysledky WHERE id_hlasovanie = ? AND id_obcan = ?";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("ii", $id, $voter_id);
+$stmt->execute();
+$result = $stmt->get_result();
+$row = $result->fetch_assoc();
+
+if ($row['hlasoval'] > 0) {
+    $alreadyVoted = true;
+} else {
+    $alreadyVoted = false;
 }
 
 // Načítanie možností hlasovania z databázy
@@ -50,7 +63,7 @@ $message = "";
 $error = "";
 $results = null;
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && !$alreadyVoted) {
     $selectedOption = $_POST['vote'] ?? null;
 
     if ($selectedOption) {
@@ -61,6 +74,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt->execute();
 
         $message = "Ďakujeme za váš hlas! Hlasovali ste za možnosť: $selectedOption.";
+        $alreadyVoted = true;
     } else {
         $error = "Musíte zvoliť jednu možnosť.";
     }
@@ -142,15 +156,6 @@ if ($totalVotes > 0) {
             margin: 20px 0;
             position: relative;
         }
-        .progress-bar-container:not(:last-child)::after {
-            content: "";
-            position: absolute;
-            bottom: -10px;
-            left: 0;
-            width: 100%;
-            height: 1px;
-            background-color: #ccc;
-        }
         .progress-bar {
             height: 20px;
             background-color: #3A59D1;
@@ -188,7 +193,18 @@ if ($totalVotes > 0) {
 </head>
 <body>
     <div class="voting-container">
-        <?php if ($message): ?>
+        <?php if ($alreadyVoted): ?>
+            <p class="message">Ďakujeme, pre túto anketu ste už hlasovali!</p>
+            <?php if ($results): ?>
+                <?php foreach ($results as $option => $percent): ?>
+                    <div class="progress-bar-container">
+                        <div class="progress-bar" style="width: <?php echo $percent; ?>%;"><?php echo $percent; ?>%</div>
+                        <p><strong><?php echo htmlspecialchars($option); ?></strong></p>
+                    </div>
+                <?php endforeach; ?>
+            <?php endif; ?>
+            <button onclick="location.href='votingmenu.php'">Späť</button>
+        <?php elseif ($message): ?>
             <p class="message"><?php echo htmlspecialchars($message); ?></p>
             <?php if ($results): ?>
                 <?php foreach ($results as $option => $percent): ?>

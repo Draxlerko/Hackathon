@@ -126,7 +126,7 @@ if (!isset($_SESSION['user'])) {
             </div>
             <span>Anketa</span>
         </a>
-        <a href="../login/payments.php" class="menu-item">
+        <a href="/hackathon/Hackathon/paygate.php" class="menu-item">
             <div class="menu-item-icon">
                 <div class="icon-line"></div>
                 <div class="icon-line"></div>

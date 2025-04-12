@@ -13,6 +13,7 @@ if (!isset($_SESSION['user'])) {
 }
 
 $success = false; // Flag to track success
+$errorCooldown = false; // Flag to track cooldown error
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $nazov = $_POST['nazov'] ?? null;
@@ -44,18 +45,39 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         die("Connection failed: " . $conn->connect_error);
     }
 
-    // Insert the record into the database
-    $sql = "INSERT INTO podnet (id_obcan, nazov, obrazok, text, typ, datum) VALUES (?, ?, ?, ?, ?, NOW())";
+    // Check if the user has submitted a report in the last 24 hours
+    $sql = "SELECT datum FROM podnet WHERE id_obcan = ? ORDER BY datum DESC LIMIT 1";
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("issss", $id_obcan, $nazov, $obrazok, $text, $typ);
+    $stmt->bind_param("i", $id_obcan);
+    $stmt->execute();
+    $stmt->bind_result($last_submission_date);
+    $stmt->fetch();
+    $stmt->close();
 
-    if ($stmt->execute()) {
-        $success = true; // Set success flag
-    } else {
-        echo "Chyba pri registrácii podnetu: " . $stmt->error;
+    if ($last_submission_date) {
+        $last_submission_time = strtotime($last_submission_date);
+        $current_time = time();
+
+        if (($current_time - $last_submission_time) < 86400) { // 86400 seconds = 24 hours
+            $errorCooldown = true; // Set cooldown error flag
+        }
     }
 
-    $stmt->close();
+    if (!$errorCooldown) {
+        // Insert the record into the database
+        $sql = "INSERT INTO podnet (id_obcan, nazov, obrazok, text, typ, datum) VALUES (?, ?, ?, ?, ?, NOW())";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("issss", $id_obcan, $nazov, $obrazok, $text, $typ);
+
+        if ($stmt->execute()) {
+            $success = true; // Set success flag
+        } else {
+            echo "Chyba pri registrácii podnetu: " . $stmt->error;
+        }
+
+        $stmt->close();
+    }
+
     $conn->close();
 }
 ?>
@@ -101,7 +123,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         </form>
     </div>
 
-    <!-- Modal -->
+    <!-- Success Modal -->
     <div class="modal" id="successModal">
         <div class="modal-content">
             <h3>Podnet bol úspešne zaregistrovaný!</h3>
@@ -109,15 +131,30 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         </div>
     </div>
 
+    <!-- Cooldown Error Modal -->
+    <div class="modal" id="cooldownModal">
+        <div class="modal-content">
+            <h3>Chyba: Podnet môžete podať len raz za 24 hodín.</h3>
+            <button onclick="closeModal()">OK</button>
+        </div>
+    </div>
+
     <script>
-        // Show the modal if the form was successfully submitted
+        // Show the success modal if the form was successfully submitted
         <?php if ($success): ?>
         document.getElementById('successModal').style.display = 'flex';
         <?php endif; ?>
 
+        // Show the cooldown error modal if the user is on cooldown
+        <?php if ($errorCooldown): ?>
+        document.getElementById('cooldownModal').style.display = 'flex';
+        <?php endif; ?>
+
         // Close the modal
         function closeModal() {
-            document.getElementById('successModal').style.display = 'none';
+            document.querySelectorAll('.modal').forEach(modal => {
+                modal.style.display = 'none';
+            });
         }
     </script>
 </body>

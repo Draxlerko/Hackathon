@@ -15,25 +15,50 @@ if ($result->num_rows > 0) {
 
 // Spracovanie formulára
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $nazov = trim($_POST['nazov']);
-    $typ = $_POST['typ'];
-    $text = trim($_POST['text']);
-    $datum_od = $_POST['datum_od'];
-    $datum_do = $_POST['datum_do'];
-    $id_obec = intval($_POST['id_obec']);
+    if (isset($_POST['update_id'])) {
+        $update_id = intval($_POST['update_id']);
+        $nazov = trim($_POST['nazov']);
+        $typ = $_POST['typ'];
+        $text = trim($_POST['text']);
+        $datum_od = $_POST['datum_od'];
+        $datum_do = $_POST['datum_do'];
+        $id_obec = intval($_POST['id_obec']);
 
-    if (!empty($nazov) && !empty($typ) && !empty($text) && !empty($datum_od) && !empty($datum_do) && $id_obec > 0) {
-        $stmt = $conn->prepare("INSERT INTO news (typ, nazov, text, datum_od, datum_do, id_obec) VALUES (?, ?, ?, ?, ?, ?)");
-        $stmt->bind_param("sssssi", $typ, $nazov, $text, $datum_od, $datum_do, $id_obec);
+        if (!empty($nazov) && !empty($typ) && !empty($text) && !empty($datum_od) && !empty($datum_do) && $id_obec > 0) {
+            $update_query = "UPDATE news SET typ = ?, nazov = ?, text = ?, datum_od = ?, datum_do = ?, id_obec = ? WHERE id = ?";
+            $stmt = $conn->prepare($update_query);
+            $stmt->bind_param("sssssii", $typ, $nazov, $text, $datum_od, $datum_do, $id_obec, $update_id);
 
-        if ($stmt->execute()) {
-            $success = "✅ Úspešne uložené!";
+            if ($stmt->execute()) {
+                $success = "✅ Udalosť bola úspešne aktualizovaná!";
+            } else {
+                $error = "❌ Chyba pri aktualizácii: " . $stmt->error;
+            }
+            $stmt->close();
         } else {
-            $error = "❌ Chyba pri ukladaní: " . $stmt->error;
+            $error = "❗ Vyplň všetky polia.";
         }
-        $stmt->close();
     } else {
-        $error = "❗ Vyplň všetky polia.";
+        $nazov = trim($_POST['nazov']);
+        $typ = $_POST['typ'];
+        $text = trim($_POST['text']);
+        $datum_od = $_POST['datum_od'];
+        $datum_do = $_POST['datum_do'];
+        $id_obec = intval($_POST['id_obec']);
+
+        if (!empty($nazov) && !empty($typ) && !empty($text) && !empty($datum_od) && !empty($datum_do) && $id_obec > 0) {
+            $stmt = $conn->prepare("INSERT INTO news (typ, nazov, text, datum_od, datum_do, id_obec) VALUES (?, ?, ?, ?, ?, ?)");
+            $stmt->bind_param("sssssi", $typ, $nazov, $text, $datum_od, $datum_do, $id_obec);
+
+            if ($stmt->execute()) {
+                $success = "✅ Úspešne uložené!";
+            } else {
+                $error = "❌ Chyba pri ukladaní: " . $stmt->error;
+            }
+            $stmt->close();
+        } else {
+            $error = "❗ Vyplň všetky polia.";
+        }
     }
 }
 
@@ -358,14 +383,16 @@ if (isset($_GET['edit'])) {
 
         <!-- Formulár na tvorbu udalosti -->
         <form method="post">
-            <h2>📝 Pridať oznam / udalosť</h2>
+            <h2>📝 <?= isset($edit_event) ? 'Upraviť' : 'Pridať' ?> oznam / udalosť</h2>
+
+            <input type="hidden" name="update_id" value="<?= isset($edit_event) ? $edit_event['id'] : '' ?>">
 
             <label for="nazov">Názov:</label>
-            <input type="text" id="nazov" name="nazov" required>
+            <input type="text" id="nazov" name="nazov" value="<?= isset($edit_event) ? htmlspecialchars($edit_event['nazov']) : '' ?>" required>
 
             <label>Typ:</label>
             <div class="radio-group">
-                <label><input type="radio" name="typ" value="oznam" checked> Oznam</label>
+            <label><input type="radio" name="typ" value="oznam" checked> Oznam</label>
                 <label><input type="radio" name="typ" value="udalost"> Udalosť</label>
                 <label><input type="radio" name="typ" value="sport"> Športová udalosť</label>
                 <label><input type="radio" name="typ" value="zmena"> Zmena</label> 
@@ -373,23 +400,25 @@ if (isset($_GET['edit'])) {
             </div>
 
             <label for="datum_od">Dátum od:</label>
-            <input type="date" id="datum_od" name="datum_od" required>
+            <input type="date" id="datum_od" name="datum_od" value="<?= isset($edit_event) ? $edit_event['datum_od'] : '' ?>" required>
 
             <label for="datum_do">Dátum do:</label>
-            <input type="date" id="datum_do" name="datum_do" required>
+            <input type="date" id="datum_do" name="datum_do" value="<?= isset($edit_event) ? $edit_event['datum_do'] : '' ?>" required>
 
             <label for="id_obec">Obec:</label>
             <select id="id_obec" name="id_obec" required>
                 <option value="">-- Vyber obec --</option>
                 <?php foreach ($obce as $obec): ?>
-                    <option value="<?= $obec['id'] ?>"><?= htmlspecialchars($obec['nazov']) ?></option>
+                    <option value="<?= $obec['id'] ?>" <?= isset($edit_event) && $edit_event['id_obec'] == $obec['id'] ? 'selected' : '' ?>>
+                        <?= htmlspecialchars($obec['nazov']) ?>
+                    </option>
                 <?php endforeach; ?>
             </select>
 
             <label for="text">Popis:</label>
-            <textarea id="text" name="text" rows="5" required></textarea>
+            <textarea id="text" name="text" rows="5" required><?= isset($edit_event) ? htmlspecialchars($edit_event['text']) : '' ?></textarea>
 
-            <input type="submit" value="Odoslať">
+            <input type="submit" value="<?= isset($edit_event) ? 'Upraviť' : 'Odoslať' ?>">
 
             <?php if ($success): ?>
                 <div class="msg success"><?= $success ?></div>

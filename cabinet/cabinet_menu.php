@@ -63,11 +63,11 @@
             mask-size: contain;
         }
 
-        .back-button {
+        .logout-button {
             display: inline-block;
             margin-top: 20px;
             padding: 10px 20px;
-            background-color: #3A59D1;
+            background-color: #D9534F;
             color: white;
             text-decoration: none;
             font-size: 1rem;
@@ -78,8 +78,8 @@
             text-align: center;
         }
 
-        .back-button:hover {
-            background-color: #2f47aa;
+        .logout-button:hover {
+            background-color: #C9302C;
             transform: translateY(-3px);
         }
     </style>
@@ -91,7 +91,15 @@
             <div class="menu-item-icon"></div>
             <span>Oznamy a udalosti</span>
         </a>
-        <a href="index.php" class="back-button">← Späť na hlavnú stránku</a>
+        <a href="suggestions.php" class="menu-item">
+            <div class="menu-item-icon"></div>
+            <span>Podnety</span>
+        </a>
+        <a href="votingmenu.php" class="menu-item">
+            <div class="menu-item-icon"></div>
+            <span>Hlasovanie</span>
+        </a>
+        <a href="admin_login.php" class="logout-button">Odhlásiť Admina</a>
     </div>
 </body>
 </html>

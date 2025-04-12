@@ -66,6 +66,11 @@ $daysInMonth = cal_days_in_month(CAL_GREGORIAN, $currentMonth, $currentYear);
     .calendar-container {
         text-align: center;
         margin-top: 20px;
+        /* Svetlé pozadie */
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        /* Jemný tieň */
     }
 
     .calendar {
@@ -77,162 +82,95 @@ $daysInMonth = cal_days_in_month(CAL_GREGORIAN, $currentMonth, $currentYear);
     }
 
     .calendar-day {
-        width: 50px; /* Zvýšenie veľkosti guličky */
+        width: 50px;
         height: 50px;
         display: flex;
+        flex-direction: column;
         justify-content: center;
         align-items: center;
-        border-radius: 50%; /* Gulička */
-        background-color: white; /* Farba pozadia guličky */
+        border-radius: 50%;
+        background-color: #FFFFFF;
+        /* Biele pozadie pre dni */
         font-weight: bold;
-        color: #333; /* Farba čísla */
-        border: 4px solid transparent; /* Hrubší okraj, predvolene priehľadný */
-        transition: all 0.3s ease; /* Plynulý prechod pri zmene */
+        color: #201E43;
+        /* Tmavý text */
+        border: 2px solid transparent;
+        transition: all 0.3s ease;
+        cursor: pointer;
+        position: relative;
     }
 
-    .calendar-day.yellow {
-        border-color: #FFD700; /* Zlatá farba pre plasty */
-        color:black;
-        background-color: white; /* Farba pozadia guličky */
+    .calendar-day.today {
+        border: 2px solid #508C9B;
+        /* Zvýraznenie dnešného dňa */
     }
 
-    .calendar-day.green {
-        border-color: #008000; /* Zelená farba pre sklo */
-        color:black;
-        background-color: white; /* Farba pozadia guličky */
-    }
-
-    .calendar-day.blue {
-        border-color: #0000FF; /* Modrá farba pre papier */
-        color:black;
-        background-color: white; /* Farba pozadia guličky */    
-    }
-
-    .calendar-day.brown {
-        border-color: #8B4513; /* Hnedá farba pre bio */
-        color:black;
-        background-color: white; /* Farba pozadia guličky */
-    }
-
-    .calendar-day.black {
-        border-color: #000000; /* Čierna farba pre komunálny odpad */
-        color:black;
-        background-color: white; /* Farba pozadia guličky */
+    .calendar-day .event-dot {
+        width: 6px;
+        height: 6px;
+        background-color: #508C9B;
+        /* Modrozelená bodka */
+        border-radius: 50%;
+        margin-top: 5px;
     }
 
     .calendar-day:hover {
-        transform: scale(1.1); /* Zvýraznenie pri hover */
-        cursor: pointer;
+        transform: scale(1.1);
+        /* Zvýraznenie pri hover */
     }
 
     .calendar-day.empty {
         background-color: transparent;
         border: none;
+        cursor: default;
     }
 
-    .calendar-navigation {
-        display: flex;
-        justify-content: space-between;
-        margin: 10px 0;
-    }
-
-    .nav-btn {
-        text-decoration: none;
-        background-color: #00bcd4;
-        color: white;
-        padding: 5px 10px;
-        border-radius: 5px;
-    }
-
-    .nav-btn:hover {
-        background-color: #008c9e;
-    }
-
-    .calendar-legend {
-        display: flex;
-        justify-content: center;
-        gap: 20px;
+    .calendar-events {
         margin-top: 20px;
+        text-align: left;
+        background-color: #FFFFFF;
+        padding: 15px;
+        border-radius: 10px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.33);
     }
 
-    .legend {
-        display: inline-block;
-        width: 20px;
-        height: 20px;
-        border-radius: 50%;
-        margin-right: 5px;
+    .calendar-events h5 {
+        color: #134B70;
+        font-weight: bold;
+        margin-bottom: 10px;
     }
 
-    .legend.yellow {
-        background-color: yellow;
+    #event-details {
+        color: #201E43;
     }
 
-    .legend.green {
-        background-color: green;
+    .vrsok{
+        background-image: url();
+        background-size: cover;
+        background-repeat: no-repeat;
     }
 
-    .legend.blue {
-        background-color: blue;
-    }
-
-    .legend.brown {
-        background-color: brown;
-    }
-
-    .legend.black {
-        background-color: black;
-    }
-
-    .filter-btn {
-        text-decoration: none;
-        font-size: 16px;
-        color: black;
-        padding: 10px 20px;
-        border-radius: 5px;
-        border: none;
-        background-color: #f0f0f0; /* Predvolená farba pozadia */
-        cursor: pointer;
-        transition: all 0.3s ease;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sivý tieň pod tlačidlom */
-    }
-
-    .filter-btn:hover {
-        transform: translateY(-2px); /* Mierne zdvihnutie pri hover */
-        box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2); /* Zvýraznený tieň pri hover */
-    }
-
-    .filter-btn:active {
-        transform: translateY(1px); /* Jemný stlačený efekt */
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Zmenšený tieň pri kliknutí */
-    }
 </style><br>
 <div class="container">
-    <div class="row">
-        <div class="col-lg-6">
-
-        </div>
-        <div class="col-lg-6">
-
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-lg-12">
-            <h4>Nadchádzajúce udalosti v našej obci</h4>
-            <div class="filter-buttons">
-                <button class="filter-btn" data-category="vsetky">Všetky</button>
-                <button class="filter-btn" data-category="oznam" style="background-color:#00bcd4;color:white;font-weight:600">Oznam</button>
-                <button class="filter-btn" data-category="kultura" style="background-color:#e91e63;color:white;font-weight:600">Kultúra</button>
-                <button class="filter-btn" data-category="sport" style="background-color:#FF7852;color:white;font-weight:600">Šport</button>
-                <button class="filter-btn" data-category="zmena" style="background-color:#673ab7;color:white;font-weight:600">Zmena</button>
-            </div>
-            <div class="carousel-container">
-                <button class="carousel-btn left-btn">&lt;</button>
-                <div class="events-carousel">
-                    <?php
-                    if ($result->num_rows > 0) {
-                        while ($row = $result->fetch_assoc()) {
-                            $categoryClass = strtolower($row['typ']);
-                            echo "
+    <section class="vrsok">
+        <div class="row">
+            <div class="col-lg-12">
+                <h4>Nadchádzajúce udalosti v našej obci</h4>
+                <div class="filter-buttons">
+                    <button class="filter-btn" data-category="vsetky">Všetky</button>
+                    <button class="filter-btn" data-category="oznam" style="background-color:#00bcd4;color:white;font-weight:600">Oznam</button>
+                    <button class="filter-btn" data-category="kultura" style="background-color:#e91e63;color:white;font-weight:600">Kultúra</button>
+                    <button class="filter-btn" data-category="sport" style="background-color:#FF7852;color:white;font-weight:600">Šport</button>
+                    <button class="filter-btn" data-category="zmena" style="background-color:#673ab7;color:white;font-weight:600">Zmena</button>
+                </div>
+                <div class="carousel-container">
+                    <button class="carousel-btn left-btn">&lt;</button>
+                    <div class="events-carousel">
+                        <?php
+                        if ($result->num_rows > 0) {
+                            while ($row = $result->fetch_assoc()) {
+                                $categoryClass = strtolower($row['typ']);
+                                echo "
                             <div class='event-card $categoryClass'>
                                 <h3>{$row['nazov']}</h3>
                                 <p>{$row['text']}</p>
@@ -240,87 +178,87 @@ $daysInMonth = cal_days_in_month(CAL_GREGORIAN, $currentMonth, $currentYear);
                                 <span class='badge $categoryClass'>{$row['typ']}</span>
                             </div>
                             ";
-                        }
-                    } else {
-                        echo "<p>Žiadne udalosti na zobrazenie.</p>";
-                    }
-                    ?>
-                </div>
-                <button class="carousel-btn right-btn">&gt;</button>
-            </div>
-        </div>
-    </div><br><br>
-    <div class="row">
-        <div class="col-lg-6">
-            <h4>Interaktívna mapa </h4>
-        </div>
-        <div class="col-lg-6"> <!-- mapa -->
-            <div class="calendar-container" style="border: 1px solid #ccc; padding: 20px; border-radius: 10px;">
-                <h4 style="text-align:left;">Kalendár <?= getMonthName($currentMonth) . " " . $currentYear ?></h4>
-                <div class="calendar">
-                    <?php
-                    // Získanie prvého dňa v mesiaci
-                    $firstDayOfMonth = date('N', strtotime("$currentYear-$currentMonth-01"));
-                    $emptyDays = $firstDayOfMonth - 1; // Počet prázdnych dní pred prvým dňom mesiaca
-
-                    // Prázdne dni pred prvým dňom mesiaca
-                    for ($i = 0; $i < $emptyDays; $i++) {
-                        echo '<div class="calendar-day empty"></div>';
-                    }
-
-                    // Dni v mesiaci
-                    for ($day = 1; $day <= $daysInMonth; $day++):
-                        $date = sprintf('%04d-%02d-%02d', $currentYear, $currentMonth, $day);
-                        $colorClass = '';
-                        if (isset($odpad_data[$date])) {
-                            switch ($odpad_data[$date]) {
-                                case 'plasty': $colorClass = 'yellow'; break;
-                                case 'sklo': $colorClass = 'green'; break;
-                                case 'papier': $colorClass = 'blue'; break;
-                                case 'bio': $colorClass = 'brown'; break;
-                                case 'komunalny': $colorClass = 'black'; break;
                             }
+                        } else {
+                            echo "<p>Žiadne udalosti na zobrazenie.</p>";
                         }
-                    ?>
-                        <div class="calendar-day <?= $colorClass ?>">
-                            <?= $day ?>
-                        </div>
-                    <?php endfor; ?>
-                </div>
-                <div class="calendar-navigation">
-                    <?php
-                    // Výpočet predchádzajúceho mesiaca a roka
-                    $prevMonth = $currentMonth - 1;
-                    $prevYear = $currentYear;
-                    if ($prevMonth < 1) {
-                        $prevMonth = 12;
-                        $prevYear--;
-                    }
-
-                    // Výpočet nasledujúceho mesiaca a roka
-                    $nextMonth = $currentMonth + 1;
-                    $nextYear = $currentYear;
-                    if ($nextMonth > 12) {
-                        $nextMonth = 1;
-                        $nextYear++;
-                    }
-                    ?>
-                    <a href="?month=<?= $prevMonth ?>&year=<?= $prevYear ?>" class="nav-btn">&lt; <?= getMonthName($prevMonth) . "/$prevYear" ?></a>
-                    <a href="?month=<?= $nextMonth ?>&year=<?= $nextYear ?>" class="nav-btn"><?= getMonthName($nextMonth) . "/$nextYear" ?> &gt;</a>
-                </div>
-                <div class="calendar-legend">
-                    <p><span class="legend yellow"></span> Plasty</p>
-                    <p><span class="legend green"></span> Sklo</p>
-                    <p><span class="legend blue"></span> Papier</p>
-                    <p><span class="legend brown"></span> Bio</p>
-                    <p><span class="legend black"></span> Komunálny odpad</p>
+                        ?>
+                    </div>
+                    <button class="carousel-btn right-btn">&gt;</button>
                 </div>
             </div>
-        </div>
-    </div><br><br><br>
+        </div><br><br>
+    </section>
+    <section class="spodok">
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="calendar-container">
+                    <h4 style="text-align:center;">Interaktívna mapa </h4>
+                    <img src="mapa_MSZ.png" alt="Mapa" style="width: 100%; height: auto; border-radius: 10px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+                </div>
+            </div>
+            <div class="col-lg-6"> <!-- mapa -->
+                <div class="calendar-container">
+                    <h4>Kalendár <?= getMonthName($currentMonth) . " " . $currentYear ?></h4>
+                    <div class="calendar">
+                        <?php
+                        // Získanie prvého dňa v mesiaci
+                        $firstDayOfMonth = date('N', strtotime("$currentYear-$currentMonth-01"));
+                        $emptyDays = $firstDayOfMonth - 1;
 
+                        // Prázdne dni pred prvým dňom mesiaca
+                        for ($i = 0; $i < $emptyDays; $i++) {
+                            echo '<div class="calendar-day empty"></div>';
+                        }
+
+                        // Dni v mesiaci
+                        for ($day = 1; $day <= $daysInMonth; $day++):
+                            $date = sprintf('%04d-%02d-%02d', $currentYear, $currentMonth, $day);
+                            $hasEvent = isset($odpad_data[$date]) || isset($events[$date]); // Skontroluje, či sú udalosti
+                            $isToday = ($date === date('Y-m-d')); // Skontroluje, či je dnešný deň
+                        ?>
+                            <div class="calendar-day <?= $isToday ? 'today' : '' ?>" data-date="<?= $date ?>">
+                                <span><?= $day ?></span>
+                                <?php if ($hasEvent): ?>
+                                    <div class="event-dot"></div>
+                                <?php endif; ?>
+                            </div>
+                        <?php endfor; ?>
+                    </div>
+                    <div class="calendar-events">
+                        <h5>Udalosti</h5>
+                        <div id="event-details">Kliknite na deň pre zobrazenie udalostí.</div>
+                    </div>
+                </div>
+            </div>
+        </div><br><br><br>
+    </section>
 </div>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const calendarDays = document.querySelectorAll(".calendar-day");
+        const eventDetails = document.getElementById("event-details");
 
+        calendarDays.forEach(day => {
+            day.addEventListener("click", function() {
+                const date = this.getAttribute("data-date");
+
+                // Simulácia udalostí (nahradiť skutočnými údajmi z PHP)
+                const events = {
+
+                };
+
+                if (events[date]) {
+                    eventDetails.innerHTML = events[date]
+                        .map(event => `<p>${event}</p>`)
+                        .join("");
+                } else {
+                    eventDetails.innerHTML = "Žiadne udalosti na tento deň.";
+                }
+            });
+        });
+    });
+</script>
 <?php
 $conn->close();
 include 'footer.php';

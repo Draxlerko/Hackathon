@@ -1,46 +1,50 @@
 <style>
     .footer-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Responzívne stĺpce */
-    gap: 20px; /* Medzera medzi stĺpcami */
-    background-color: #003366; /* Farba pozadia */
-    color: white; /* Farba textu */
-    padding: 40px 20px; /* Vnútorné odsadenie */
-}
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 20px; /* Medzera medzi stĺpcami */
+        background-color: #201E43; /* Tmavé pozadie */
+        color: #EEEEEE; /* Svetlý text */
+        padding: 40px 20px; /* Vnútorné odsadenie */
+    }
 
-.footer-item h3 {
-    color: #FFD700; /* Zlatá farba nadpisov */
-    margin-bottom: 15px;
-}
+    .footer-item h3 {
+        color: #508C9B; /* Modrozelené nadpisy */
+        margin-bottom: 15px;
+    }
 
-.footer-item ul {
-    list-style: none; /* Odstránenie odrážok */
-    padding: 0;
-}
+    .footer-item ul {
+        list-style: none; /* Odstránenie odrážok */
+        padding: 0;
+    }
 
-.footer-item ul li {
-    margin-bottom: 10px;
-}
+    .footer-item ul li {
+        margin-bottom: 10px;
+    }
 
-.footer-item ul li a {
-    color: white;
-    text-decoration: none;
-    transition: color 0.3s ease;
-}
+    .footer-item ul li a {
+        color: #EEEEEE; /* Svetlý text pre odkazy */
+        text-decoration: none;
+        transition: color 0.3s ease;
+    }
 
-.footer-item ul li a:hover {
-    color: #FFD700; /* Zlatá farba pri hover */
-}
+    .footer-item ul li a:hover {
+        color: #508C9B; /* Modrozelená farba pri hover */
+    }
 
-.footer-item p a {
-    color: white;
-    text-decoration: none;
-    transition: color 0.3s ease;
-}
+    .footer-item p {
+        margin: 0;
+    }
 
-.footer-item p a:hover {
-    color: #FFD700; /* Zlatá farba pri hover */
-}
+    .footer-item p a {
+        color: #EEEEEE; /* Svetlý text pre odkazy */
+        text-decoration: none;
+        transition: color 0.3s ease;
+    }
+
+    .footer-item p a:hover {
+        color: #508C9B; /* Modrozelená farba pri hover */
+    }
 </style>
 
 <footer>

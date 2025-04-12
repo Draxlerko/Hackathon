@@ -122,6 +122,11 @@ if (!isset($_SESSION['user'])) {
             <div class="menu-item-icon"></div>
             <span>Anketa</span>
         </a>
+        <!-- Nové tlačidlo na presmerovanie na payments.php -->
+        <a href="../login/payments.php" class="menu-item">
+            <div class="menu-item-icon"></div>
+            <span>Platby</span>
+        </a>
     </div>
     <a href="logout.php" class="logout-button">Odhlásiť sa</a>
 </body>

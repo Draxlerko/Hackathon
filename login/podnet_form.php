@@ -17,30 +17,37 @@ $success = false; // Flag to track success
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $nazov = $_POST['nazov'] ?? null;
     $text = $_POST['text'] ?? null;
-    $typ = $_POST['typ'] ?? null; // Pridanie typu
+    $typ = $_POST['typ'] ?? null;
     $id_obcan = $_SESSION['user']['id'] ?? null;
+    $obrazok = null;
 
+    // Check if all required fields are filled
     if (empty($nazov) || empty($text) || empty($typ)) {
         die("Chyba: Všetky polia musia byť vyplnené.");
     }
 
-    $servername = "localhost";
-    $username = "root"; // nastav meno svojho používateľa databázy
-    $password = ""; // nastav heslo pre svoju databázu
-    $dbname = "prvy_proof"; // názov tvojej databázy
+    // Handle the uploaded image
+    if (isset($_FILES['obrazok']) && $_FILES['obrazok']['error'] === UPLOAD_ERR_OK) {
+        $obrazok = file_get_contents($_FILES['obrazok']['tmp_name']);
+    }
 
-    // Vytvorenie pripojenia
+    $servername = "localhost";
+    $username = "root";
+    $password = "";
+    $dbname = "prvy_proof";
+
+    // Create connection
     $conn = new mysqli($servername, $username, $password, $dbname);
 
-    // Skontroluj pripojenie
+    // Check connection
     if ($conn->connect_error) {
         die("Connection failed: " . $conn->connect_error);
     }
 
-    // Vloženie podnetu do databázy
-    $sql = "INSERT INTO podnet (id_obcan, nazov, text, typ, datum) VALUES (?, ?, ?, ?, NOW())";
+    // Insert the record into the database
+    $sql = "INSERT INTO podnet (id_obcan, nazov, obrazok, text, typ, datum) VALUES (?, ?, ?, ?, ?, NOW())";
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("isss", $id_obcan, $nazov, $text, $typ);
+    $stmt->bind_param("issss", $id_obcan, $nazov, $obrazok, $text, $typ);
 
     if ($stmt->execute()) {
         $success = true; // Set success flag
@@ -48,6 +55,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         echo "Chyba pri registrácii podnetu: " . $stmt->error;
     }
 
+    $stmt->close();
     $conn->close();
 }
 ?>
@@ -63,9 +71,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <body>
     <div class="form-container">
         <h2>Zadaj podnet</h2>
-        <form method="post" action="podnet_form.php">
+        <form method="post" action="podnet_form.php" enctype="multipart/form-data">
             <label for="nazov">Názov podnetu:</label>
             <input type="text" id="nazov" name="nazov" required>
+            
+            <label for="obrazok">Pridať obrázok:</label>
+            <input type="file" id="obrazok" name="obrazok" accept="image/*">
             
             <label for="text">Text podnetu:</label>
             <textarea id="text" name="text" required></textarea>

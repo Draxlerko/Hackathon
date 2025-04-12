@@ -21,15 +21,33 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $datum_od = $_POST['datum_od'];
     $datum_do = $_POST['datum_do'];
     $id_obec = intval($_POST['id_obec']);
+    $obrazok = null;
 
-    // Kontrola, či sú všetky polia vyplnené
+    // Handle the uploaded image
+    if (isset($_FILES['obrazok']) && $_FILES['obrazok']['error'] === UPLOAD_ERR_OK) {
+        $obrazok = file_get_contents($_FILES['obrazok']['tmp_name']);
+    }
+
+    // Check if all required fields are filled
     if (!empty($nazov) && !empty($typ) && !empty($text) && !empty($datum_od) && !empty($datum_do) && $id_obec > 0) {
-        // Ak ide o aktualizáciu udalosti
+        // If updating an event
         if (isset($_POST['update_id']) && !empty($_POST['update_id'])) {
             $update_id = intval($_POST['update_id']);
-            $update_query = "UPDATE news SET typ = ?, nazov = ?, text = ?, datum_od = ?, datum_do = ?, id_obec = ? WHERE id = ?";
-            $stmt = $conn->prepare($update_query);
-            $stmt->bind_param("sssssii", $typ, $nazov, $text, $datum_od, $datum_do, $id_obec, $update_id);
+            if ($obrazok) {
+                $update_query = "UPDATE news SET typ = ?, nazov = ?, text = ?, obrazok = ?, datum_od = ?, datum_do = ?, id_obec = ? WHERE id = ?";
+                $stmt = $conn->prepare($update_query);
+                if (!$stmt) {
+                    die("Error preparing statement: " . $conn->error);
+                }
+                $stmt->bind_param("ssssssii", $typ, $nazov, $text, $obrazok, $datum_od, $datum_do, $id_obec, $update_id);
+            } else {
+                $update_query = "UPDATE news SET typ = ?, nazov = ?, text = ?, datum_od = ?, datum_do = ?, id_obec = ? WHERE id = ?";
+                $stmt = $conn->prepare($update_query);
+                if (!$stmt) {
+                    die("Error preparing statement: " . $conn->error);
+                }
+                $stmt->bind_param("ssssssi", $typ, $nazov, $text, $datum_od, $datum_do, $id_obec, $update_id);
+            }
 
             if ($stmt->execute()) {
                 $success = "✅ Udalosť bola úspešne aktualizovaná!";
@@ -38,10 +56,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
             $stmt->close();
         } else {
-            // Ak ide o pridanie novej udalosti
-            $insert_query = "INSERT INTO news (typ, nazov, text, datum_od, datum_do, id_obec) VALUES (?, ?, ?, ?, ?, ?)";
+            // If adding a new event
+            $insert_query = "INSERT INTO news (typ, nazov, text, obrazok, datum_od, datum_do, id_obec) VALUES (?, ?, ?, ?, ?, ?, ?)";
             $stmt = $conn->prepare($insert_query);
-            $stmt->bind_param("sssssi", $typ, $nazov, $text, $datum_od, $datum_do, $id_obec);
+            if (!$stmt) {
+                die("Error preparing statement: " . $conn->error);
+            }
+            $stmt->bind_param("ssssssi", $typ, $nazov, $text, $obrazok, $datum_od, $datum_do, $id_obec);
 
             if ($stmt->execute()) {
                 $success = "✅ Úspešne uložené!";
@@ -60,13 +81,16 @@ $events = [];
 $search = isset($_GET['search']) ? $_GET['search'] : '';
 $event_type = isset($_GET['event_type']) ? $_GET['event_type'] : '';
 
-$events_query = "SELECT id, typ, nazov, text, datum_od, datum_do, id_obec FROM news WHERE nazov LIKE ? ";
+$events_query = "SELECT id, typ, nazov, text, datum_od, datum_do, id_obec, obrazok FROM news WHERE nazov LIKE ? ";
 if ($event_type != '') {
     $events_query .= "AND typ = ? ";
 }
 $events_query .= "ORDER BY datum_od DESC LIMIT 10";
 
 $stmt = $conn->prepare($events_query);
+if (!$stmt) {
+    die("Error preparing statement: " . $conn->error);
+}
 $search_param = "%$search%";
 if ($event_type != '') {
     $stmt->bind_param("ss", $search_param, $event_type);
@@ -88,6 +112,9 @@ if (isset($_GET['delete'])) {
     $event_id = intval($_GET['delete']);
     $delete_query = "DELETE FROM news WHERE id = ?";
     $stmt = $conn->prepare($delete_query);
+    if (!$stmt) {
+        die("Error preparing statement: " . $conn->error);
+    }
     $stmt->bind_param("i", $event_id);
     if ($stmt->execute()) {
         $success = "✅ Udalosť bola úspešne odstránená!";
@@ -102,6 +129,9 @@ if (isset($_GET['edit'])) {
     $event_id = intval($_GET['edit']);
     $edit_query = "SELECT * FROM news WHERE id = ?";
     $stmt = $conn->prepare($edit_query);
+    if (!$stmt) {
+        die("Error preparing statement: " . $conn->error);
+    }
     $stmt->bind_param("i", $event_id);
     $stmt->execute();
     $edit_event = $stmt->get_result()->fetch_assoc();
@@ -375,7 +405,7 @@ if (isset($_GET['edit'])) {
         <a href="cabinet_menu.php" class="back-button">← Späť</a>
 
         <!-- Formulár na tvorbu udalosti -->
-        <form method="post">
+        <form method="post" enctype="multipart/form-data">
             <h2>📝 <?= isset($edit_event) ? 'Upraviť' : 'Pridať' ?> oznam / udalosť</h2>
 
             <input type="hidden" name="update_id" value="<?= isset($edit_event) ? $edit_event['id'] : '' ?>">
@@ -385,12 +415,15 @@ if (isset($_GET['edit'])) {
 
             <label>Typ:</label>
             <div class="radio-group">
-            <label><input type="radio" name="typ" value="oznam" checked> Oznam</label>
-                <label><input type="radio" name="typ" value="udalost"> Udalosť</label>
-                <label><input type="radio" name="typ" value="sport"> Športová udalosť</label>
-                <label><input type="radio" name="typ" value="zmena"> Zmena</label> 
-                <label><input type="radio" name="typ" value="kultura"> Kultúrne podujatie</label>
+                <label><input type="radio" name="typ" value="oznam" <?= isset($edit_event) && $edit_event['typ'] === 'oznam' ? 'checked' : '' ?>> Oznam</label>
+                <label><input type="radio" name="typ" value="udalost" <?= isset($edit_event) && $edit_event['typ'] === 'udalost' ? 'checked' : '' ?>> Udalosť</label>
+                <label><input type="radio" name="typ" value="sport" <?= isset($edit_event) && $edit_event['typ'] === 'sport' ? 'checked' : '' ?>> Športová udalosť</label>
+                <label><input type="radio" name="typ" value="zmena" <?= isset($edit_event) && $edit_event['typ'] === 'zmena' ? 'checked' : '' ?>> Zmena</label>
+                <label><input type="radio" name="typ" value="kultura" <?= isset($edit_event) && $edit_event['typ'] === 'kultura' ? 'checked' : '' ?>> Kultúrne podujatie</label>
             </div>
+
+            <label for="obrazok">Pridať obrázok:</label>
+            <input type="file" id="obrazok" name="obrazok" accept="image/*">
 
             <label for="datum_od">Dátum od:</label>
             <input type="date" id="datum_od" name="datum_od" value="<?= isset($edit_event) ? $edit_event['datum_od'] : '' ?>" required>
@@ -449,6 +482,13 @@ if (isset($_GET['edit'])) {
                             <p><strong>Typ:</strong> <?= htmlspecialchars($event['typ']) ?></p>
                             <p><strong>Popis:</strong> <?= nl2br(htmlspecialchars($event['text'])) ?></p>
                             <p><strong>Dátum:</strong> <?= date('d.m.Y', strtotime($event['datum_od'])) ?> - <?= date('d.m.Y', strtotime($event['datum_do'])) ?></p>
+                            
+                            <!-- Display the image if it exists -->
+                            <?php if (!empty($event['obrazok'])): ?>
+                                <div class="event-image">
+                                    <img src="data:image/jpeg;base64,<?= base64_encode($event['obrazok']) ?>" alt="Obrázok udalosti" style="max-width: 300px; height: auto; border-radius: 8px;">
+                                </div>
+                            <?php endif; ?>
                         </div>
                     <?php endforeach; ?>
                 </div>

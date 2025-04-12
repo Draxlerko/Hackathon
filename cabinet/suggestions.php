@@ -8,7 +8,7 @@ if ($conn->connect_error) {
 
 // Fetch suggestions from the 'podnet' table, including those with NULL 'stav_id'
 $sql = "SELECT p.id, p.nazov AS title, p.text AS description, p.datum AS created_at, 
-               p.stav_id, COALESCE(s.nazov_stavu, 'Nepriradený') AS nazov_stavu
+               p.stav_id, COALESCE(s.nazov_stavu, 'Nepriradený') AS nazov_stavu, p.obrazok
         FROM podnet p
         LEFT JOIN stav s ON p.stav_id = s.id";
 $result = $conn->query($sql);
@@ -130,6 +130,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             color: #777;
         }
 
+        .suggestion-image img {
+            max-width: 300px; /* Set a maximum width */
+            max-height: 200px; /* Set a maximum height */
+            width: auto; /* Maintain aspect ratio */
+            height: auto; /* Maintain aspect ratio */
+            border-radius: 8px;
+            margin-top: 10px;
+            display: block; /* Ensure proper alignment */
+            margin-left: 0; /* Align to the left */
+            margin-right: auto; /* Remove centering */
+        }
+
         .status-form {
             margin-top: 15px;
             display: flex;
@@ -210,6 +222,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <div class="suggestion-description"><?php echo htmlspecialchars($row['description']); ?></div>
                     <div class="suggestion-date">Pridané: <?php echo htmlspecialchars($row['created_at']); ?></div>
                     <div class="suggestion-status">Status: <?php echo htmlspecialchars($row['nazov_stavu']); ?></div>
+                    
+                    <?php if (!empty($row['obrazok'])): ?>
+                        <div class="suggestion-image">
+                            <img src="data:image/jpeg;base64,<?php echo base64_encode($row['obrazok']); ?>" alt="Obrázok podnetu">
+                        </div>
+                    <?php endif; ?>
+
                     <form method="POST" class="status-form">
                         <input type="hidden" name="podnet_id" value="<?php echo $row['id']; ?>">
                         <select name="stav_id" class="status-select">

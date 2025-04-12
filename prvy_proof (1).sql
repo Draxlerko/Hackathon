@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hostiteľ: 127.0.0.1
--- Čas generovania: Pi 11.Apr 2025, 23:54
+-- Čas generovania: So 12.Apr 2025, 04:00
 -- Verzia serveru: 10.4.32-MariaDB
 -- Verzia PHP: 8.2.12
 
@@ -20,6 +20,47 @@ SET time_zone = "+00:00";
 --
 -- Databáza: `prvy_proof`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Štruktúra tabuľky pre tabuľku `admin`
+--
+
+CREATE TABLE `admin` (
+  `id` int(11) NOT NULL,
+  `meno` varchar(255) NOT NULL,
+  `heslo` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Sťahujem dáta pre tabuľku `admin`
+--
+
+INSERT INTO `admin` (`id`, `meno`, `heslo`) VALUES
+(1, 'admin', '56b1db8133d9eb398aabd376f07bf8ab5fc584ea0b8bd6a1770200cb613ca005');
+
+-- --------------------------------------------------------
+
+--
+-- Štruktúra tabuľky pre tabuľku `feedback`
+--
+
+CREATE TABLE `feedback` (
+  `id` int(11) NOT NULL,
+  `typ_osoby` enum('dedincan','cudzinec') NOT NULL COMMENT 'Určuje, či je osoba dedinčan alebo cudzinec',
+  `typ_recenzie` enum('pozitivna','negativna') NOT NULL COMMENT 'Určuje, či je recenzia pozitívna alebo negatívna',
+  `text_recenzie` text NOT NULL COMMENT 'Text recenzie od osoby',
+  `datum` timestamp NOT NULL DEFAULT current_timestamp() COMMENT 'Dátum a čas pridania recenzie'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Sťahujem dáta pre tabuľku `feedback`
+--
+
+INSERT INTO `feedback` (`id`, `typ_osoby`, `typ_recenzie`, `text_recenzie`, `datum`) VALUES
+(3, 'dedincan', 'pozitivna', 'tesim sa ako nasa obec napreduje', '2025-04-12 01:25:15'),
+(5, 'cudzinec', 'negativna', 'smrdi tu', '2025-04-12 01:25:27');
 
 -- --------------------------------------------------------
 
@@ -97,23 +138,27 @@ CREATE TABLE `news` (
 
 INSERT INTO `news` (`id`, `typ`, `nazov`, `text`, `datum_od`, `datum_do`, `id_obec`) VALUES
 (1, 'oznam', 'Rekonštrukcia chodníkov', 'Opravíme poškodené úseky v strede obce.', '2024-04-01', '2024-04-10', 1),
-(2, 'udalosť', 'Deň obce Čierne', 'Oslavujeme s kultúrnym programom a koncertom.', '2024-04-05', '2024-04-05', 1),
-(3, 'oznam', 'Zmena zberu odpadu', 'Zber plastov bude každý pondelok.', '2024-04-07', '2024-04-30', 1),
+(2, 'kultura', 'Deň obce Čierne', 'Oslavujeme s kultúrnym programom a koncertom.', '2024-04-05', '2024-04-05', 1),
+(3, 'zmena', 'Zmena zberu odpadu', 'Zber plastov bude každý pondelok.', '2024-04-07', '2024-04-30', 1),
 (4, 'oznam', 'Stavba cyklotrasy', 'Začína výstavba novej cyklotrasy.', '2024-04-02', '2024-04-20', 2),
-(5, 'udalosť', 'Beh zdravia Svrčinovec', 'Zúčastnite sa komunitného behu pre všetkých.', '2024-04-08', '2024-04-08', 2),
+(5, 'kultura', 'Beh zdravia Svrčinovec', 'Zúčastnite sa komunitného behu pre všetkých.', '2024-04-08', '2024-04-08', 2),
 (6, 'oznam', 'Výpadok elektriny', 'Elektrina nepôjde v časti obce od 10:00.', '2024-04-04', '2024-04-04', 2),
 (7, 'oznam', 'Zber elektroodpadu', 'V sobotu prebehne zber starých spotrebičov.', '2024-04-06', '2024-04-06', 3),
-(8, 'udalosť', 'Koncert v Skalitom', 'Kapela vystúpi túto sobotu večer.', '2024-04-09', '2024-04-09', 3),
+(8, 'kultura', 'Koncert v Skalitom', 'Kapela vystúpi túto sobotu večer.', '2024-04-09', '2024-04-09', 3),
 (9, 'oznam', 'Uzávierka cesty', 'Cesta bude dočasne uzavretá kvôli oprave.', '2024-04-03', '2024-04-07', 3),
-(10, 'oznam', 'Zmena cestovných poriadkov', 'Autobusové spoje budú premávať inak.', '2024-04-10', '2024-04-15', 1),
-(14, 'udalosť', 'Uprava kostolnych hodin', 'zmeni sa to z 18.00 na 19.00', '2025-04-12', '2025-04-13', 1),
-(15, 'udalosť', 'Uprava kostolnych hodin', 'zmeni sa to z 18.00 na 19.00', '2025-04-12', '2025-04-13', 1),
-(16, 'udalosť', 'Uprava kostolnych hodin', 'zmeni sa to z 18.00 na 19.00', '2025-04-12', '2025-04-13', 1),
-(17, 'športová udalosť', 'beh', 'beh', '2025-04-12', '2025-04-12', 1),
-(18, 'zmena', 'pride mikulas', 'gckvvuzv', '2025-04-27', '2025-04-27', 1);
-(20, 'zmena', 'pride mikulas', 'gckvvuzv', '2025-04-27', '2025-04-27', 1);
-(21, 'zmena', 'pride mikulas', 'gckvvuzv', '2025-04-27', '2025-04-27', 1);
-(22, 'zmena', 'pride mikulas', 'gckvvuzv', '2025-04-27', '2025-04-27', 1);
+(10, 'zmena', 'Zmena cestovných poriadkov', 'Autobusové spoje budú premávať inak.', '2024-04-10', '2024-04-15', 1),
+(14, 'zmena', 'Uprava kostolnych hodin', 'zmeni sa to z 18.00 na 19.00', '2025-04-12', '2025-04-13', 1),
+(15, 'zmena', 'Uprava kostolnych hodin', 'zmeni sa to z 18.00 na 19.00', '2025-04-12', '2025-04-13', 1),
+(16, 'zmena', 'Uprava kostolnych hodin', 'zmeni sa to z 18.00 na 19.00', '2025-04-12', '2025-04-13', 1),
+(17, 'sport', 'beh', 'beh', '2025-04-12', '2025-04-12', 1),
+(18, 'kultura', 'pride mikulas', 'gckvvuzv', '2025-04-27', '2025-04-27', 1),
+(19, 'sport', 'Futbalovy zapas', 'Futbalovy štadión', '2025-04-12', '2025-04-12', 1),
+(20, 'sport', 'Futbalovy zapas', 'Futbalovy štadión', '2025-04-12', '2025-04-12', 1),
+(21, 'sport', 'Futbalovy zapas', 'Futbalovy štadión', '2025-04-12', '2025-04-12', 1),
+(22, 'sport', 'Futbalovy zapas', 'Futbalovy štadión', '2025-04-12', '2025-04-12', 1),
+(23, 'sport', 'Futbalovy zapas', 'Futbalovy štadión', '2025-04-12', '2025-04-12', 1),
+(24, 'sport', 'Hokejbal', 'HIHIHIHAAAAAAA', '2025-07-05', '2026-10-05', 1),
+(25, 'kultura', 'zelo si honi', 'unikatny pohlad na gazela v jeho plnej krase na namesti obce cierne', '2025-04-12', '2025-04-12', 1);
 
 -- --------------------------------------------------------
 
@@ -167,6 +212,49 @@ INSERT INTO `obec` (`id`, `nazov`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Štruktúra tabuľky pre tabuľku `office_hours`
+--
+
+CREATE TABLE `office_hours` (
+  `id` int(11) NOT NULL,
+  `datum` date NOT NULL,
+  `cas` time NOT NULL,
+  `dostupne` tinyint(1) DEFAULT 1,
+  `obec_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Sťahujem dáta pre tabuľku `office_hours`
+--
+
+INSERT INTO `office_hours` (`id`, `datum`, `cas`, `dostupne`, `obec_id`) VALUES
+(1, '2025-04-15', '08:00:00', 1, 1),
+(2, '2025-04-15', '09:00:00', 1, 1),
+(3, '2025-04-15', '10:00:00', 1, 1),
+(4, '2025-04-15', '11:00:00', 1, 1),
+(5, '2025-04-15', '12:00:00', 1, 1),
+(6, '2025-04-15', '13:00:00', 1, 2),
+(7, '2025-04-15', '14:00:00', 1, 2),
+(8, '2025-04-15', '15:00:00', 1, 2),
+(9, '2025-04-16', '08:00:00', 1, 2),
+(10, '2025-04-16', '09:00:00', 1, 2),
+(11, '2025-04-16', '10:00:00', 1, 3),
+(12, '2025-04-16', '11:00:00', 1, 3),
+(13, '2025-04-16', '12:00:00', 1, 3),
+(14, '2025-04-16', '13:00:00', 1, 3),
+(15, '2025-04-17', '08:00:00', 1, 1),
+(16, '2025-04-17', '09:00:00', 1, 1),
+(17, '2025-04-17', '10:00:00', 1, 1),
+(18, '2025-04-17', '11:00:00', 1, 2),
+(19, '2025-04-17', '12:00:00', 1, 2),
+(20, '2025-04-17', '13:00:00', 1, 2),
+(21, '2025-04-17', '14:00:00', 1, 3),
+(22, '2025-04-17', '15:00:00', 1, 3),
+(23, '2025-04-17', '16:00:00', 1, 3);
+
+-- --------------------------------------------------------
+
+--
 -- Štruktúra tabuľky pre tabuľku `podnet`
 --
 
@@ -199,6 +287,18 @@ INSERT INTO `podnet` (`id`, `id_obcan`, `nazov`, `text`, `typ`, `datum`, `stav_i
 -- --------------------------------------------------------
 
 --
+-- Štruktúra tabuľky pre tabuľku `reservations`
+--
+
+CREATE TABLE `reservations` (
+  `id` int(11) NOT NULL,
+  `office_hour_id` int(11) NOT NULL,
+  `dovod` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Štruktúra tabuľky pre tabuľku `stav`
 --
 
@@ -223,29 +323,21 @@ INSERT INTO `stav` (`id`, `nazov_stavu`) VALUES
 (9, 'Zverejnený'),
 (10, 'Zrušený');
 
--- --------------------------------------------------------
-
---
--- Štruktúra tabuľky pre tabuľku `admin`
---
-
-CREATE TABLE `admin` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `meno` varchar(100) NOT NULL,
-  `heslo` varchar(255) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Sťahujem dáta pre tabuľku `admin`
---
-
-INSERT INTO `admin` (`meno`, `heslo`) VALUES
-('admin', SHA2('Heslo', 256)); -- Heslo je zahashované pomocou SHA-256
-
 --
 -- Kľúče pre exportované tabuľky
 --
+
+--
+-- Indexy pre tabuľku `admin`
+--
+ALTER TABLE `admin`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexy pre tabuľku `feedback`
+--
+ALTER TABLE `feedback`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexy pre tabuľku `hlasovanie`
@@ -282,12 +374,26 @@ ALTER TABLE `obec`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexy pre tabuľku `office_hours`
+--
+ALTER TABLE `office_hours`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `obec_id` (`obec_id`);
+
+--
 -- Indexy pre tabuľku `podnet`
 --
 ALTER TABLE `podnet`
   ADD PRIMARY KEY (`id`),
   ADD KEY `id_obcan` (`id_obcan`),
   ADD KEY `stav_id` (`stav_id`);
+
+--
+-- Indexy pre tabuľku `reservations`
+--
+ALTER TABLE `reservations`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `office_hour_id` (`office_hour_id`);
 
 --
 -- Indexy pre tabuľku `stav`
@@ -298,6 +404,18 @@ ALTER TABLE `stav`
 --
 -- AUTO_INCREMENT pre exportované tabuľky
 --
+
+--
+-- AUTO_INCREMENT pre tabuľku `admin`
+--
+ALTER TABLE `admin`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT pre tabuľku `feedback`
+--
+ALTER TABLE `feedback`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT pre tabuľku `hlasovanie`
@@ -315,7 +433,7 @@ ALTER TABLE `hlasovanie_vysledky`
 -- AUTO_INCREMENT pre tabuľku `news`
 --
 ALTER TABLE `news`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 
 --
 -- AUTO_INCREMENT pre tabuľku `obcan`
@@ -330,10 +448,22 @@ ALTER TABLE `obec`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
+-- AUTO_INCREMENT pre tabuľku `office_hours`
+--
+ALTER TABLE `office_hours`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+
+--
 -- AUTO_INCREMENT pre tabuľku `podnet`
 --
 ALTER TABLE `podnet`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+
+--
+-- AUTO_INCREMENT pre tabuľku `reservations`
+--
+ALTER TABLE `reservations`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT pre tabuľku `stav`
@@ -365,11 +495,23 @@ ALTER TABLE `obcan`
   ADD CONSTRAINT `obcan_ibfk_1` FOREIGN KEY (`id_obec`) REFERENCES `obec` (`id`);
 
 --
+-- Obmedzenie pre tabuľku `office_hours`
+--
+ALTER TABLE `office_hours`
+  ADD CONSTRAINT `office_hours_ibfk_1` FOREIGN KEY (`obec_id`) REFERENCES `obec` (`id`);
+
+--
 -- Obmedzenie pre tabuľku `podnet`
 --
 ALTER TABLE `podnet`
   ADD CONSTRAINT `podnet_ibfk_1` FOREIGN KEY (`id_obcan`) REFERENCES `obcan` (`id`),
   ADD CONSTRAINT `podnet_ibfk_2` FOREIGN KEY (`stav_id`) REFERENCES `stav` (`id`);
+
+--
+-- Obmedzenie pre tabuľku `reservations`
+--
+ALTER TABLE `reservations`
+  ADD CONSTRAINT `reservations_ibfk_1` FOREIGN KEY (`office_hour_id`) REFERENCES `office_hours` (`id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

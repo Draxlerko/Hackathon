@@ -95,9 +95,13 @@
             <div class="menu-item-icon"></div>
             <span>Podnety</span>
         </a>
-        <a href="votingcreate.php" class="menu-item"> <!-- Upravený odkaz -->
+        <a href="votingcreate.php" class="menu-item">
             <div class="menu-item-icon"></div>
             <span>Hlasovanie</span>
+        </a>
+        <a href="feedback_admin.php" class="menu-item">
+            <div class="menu-item-icon"></div>
+            <span>Prehľad feedbacku</span>
         </a>
         <a href="admin_login.php" class="logout-button">Odhlásiť Admina</a>
     </div>

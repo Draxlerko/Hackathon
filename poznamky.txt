@@ -1,0 +1,7 @@
+slaba modra: #48ACC1
+oranzova:      #FF78524
+tmava siva:  #313131
+tmava modra: #00788A
+cervena: #d6133b
+modra:#094c9c
+light siva: #eaeaea

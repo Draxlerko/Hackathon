@@ -1,0 +1,143 @@
+.filter-buttons {
+    margin-bottom: 20px;
+}
+
+.filter-btn {
+    margin-right: 10px;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    background-color: #f0f0f0;
+    border-radius: 5px;
+}
+
+.filter-btn:hover {
+    background-color: #ddd;
+}
+
+.event-card {
+    flex: 0 0 calc(33.333% - 20px); /* Každá karta má fixnú šírku */
+    max-width: calc(33.333% - 20px);
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 15px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.event-card img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 5px;
+}
+
+.badge.oznam {
+    background-color: #00bcd4;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 3px;
+}
+
+.badge.sport {
+    background-color: #FF7852;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 3px;
+}
+
+.badge.kultura {
+    background-color: #e91e63;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 3px;
+}
+
+.badge.zmena {
+    background-color: #673ab7;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 3px;
+}
+
+ .events {
+    display: flex;
+    flex-wrap: wrap; /* Ak sa karty nezmestia, zalomia sa do ďalšieho riadku */
+    gap: 20px; /* Medzera medzi kartami */
+}
+
+.event-card h3 {
+    font-size: 1.2em;
+    margin-bottom: 10px;
+}
+
+.event-card p {
+    font-size: 0.9em;
+    color: #666;
+}
+
+.badge {
+    display: inline-block;
+    padding: 5px 10px;
+    border-radius: 3px;
+    font-size: 0.8em;
+    color: #fff;
+    margin-top: 10px;
+}
+
+.badge.oznam {
+    background-color: #00bcd4;
+}
+
+.badge.sport {
+    background-color: #FF7852;
+}
+
+.badge.kultura {
+    background-color: #e91e63;
+}
+
+.badge.zmena {
+    background-color: #673ab7;
+}
+
+
+.carousel-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    margin-top: 20px;
+}
+
+.events-carousel {
+    display: flex;
+    gap: 20px;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    padding: 10px 0;
+}
+
+.carousel-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    cursor: pointer;
+    z-index: 10;
+    border-radius: 50%;
+}
+
+.carousel-btn.left-btn {
+    left: 10px;
+}
+
+.carousel-btn.right-btn {
+    right: 10px;
+}
+
+.carousel-btn:hover {
+    background-color: rgba(0, 0, 0, 0.7);
+}

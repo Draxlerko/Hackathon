@@ -366,13 +366,10 @@ if (isset($_GET['edit'])) {
             <label>Typ:</label>
             <div class="radio-group">
                 <label><input type="radio" name="typ" value="oznam" checked> Oznam</label>
-                <label><input type="radio" name="typ" value="udalosť"> Udalosť</label>
-                <label><input type="radio" name="typ" value="športová udalosť"> Športová udalosť</label>
-                <label><input type="radio" name="typ" value="kurz"> Kurz</label>
-                <label><input type="radio" name="typ" value="kultúrne podujatie"> Kultúrne podujatie</label>
-                <label><input type="radio" name="typ" value="hudba"> Hudba</label>
-                <label><input type="radio" name="typ" value="kino"> Kino</label>
-                <label><input type="radio" name="typ" value="kostol"> Kostol</label>
+                <label><input type="radio" name="typ" value="udalost"> Udalosť</label>
+                <label><input type="radio" name="typ" value="sport"> Športová udalosť</label>
+                <label><input type="radio" name="typ" value="zmena"> Zmena</label> 
+                <label><input type="radio" name="typ" value="kultura"> Kultúrne podujatie</label>
             </div>
 
             <label for="datum_od">Dátum od:</label>
@@ -410,13 +407,10 @@ if (isset($_GET['edit'])) {
             <select id="event-type" class="search-filter" onchange="searchEvents()">
                 <option value="">Všetky typy</option>
                 <option value="oznam">Oznam</option>
-                <option value="udalosť">Udalosť</option>
-                <option value="športová udalosť">Športová udalosť</option>
-                <option value="kurz">Kurz</option>
-                <option value="kultúrne podujatie">Kultúrne podujatie</option>
-                <option value="hudba">Hudba</option>
-                <option value="kino">Kino</option>
-                <option value="kostol">Kostol</option>
+                <option value="udalost">Udalosť</option>
+                <option value="sport">Športová udalosť</option>
+                <option value="kultura">Kultúrne podujatie</option>
+                <option value="zmena">Zmena</option>
             </select>
 
             <div class="scrollable-events">

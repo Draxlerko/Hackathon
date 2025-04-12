@@ -45,6 +45,7 @@ if ($result->num_rows > 0) {
 <html lang="sk">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Voting Menu</title>
     <style>
         body {
@@ -57,6 +58,7 @@ if ($result->num_rows > 0) {
             flex-direction: column;
             align-items: center;
             justify-content: flex-start;
+            position: relative;
         }
         .voter-info {
             margin-top: 20px;
@@ -132,9 +134,28 @@ if ($result->num_rows > 0) {
             font-size: 24px;
             color: #333;
         }
+        .back-button {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: linear-gradient(135deg, #1E3C72, #2A5298);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            text-decoration: none;
+            transition: background 0.3s ease, transform 0.2s ease;
+        }
+        .back-button:hover {
+            background: linear-gradient(135deg, #2A5298, #1E3C72);
+            transform: translateY(-3px);
+        }
     </style>
 </head>
 <body>
+    <a href="../login/user_menu.php" class="back-button">Späť do hlavného menu</a>
     <div class="voter-info">
         Prihlásený používateľ: <strong><?php echo htmlspecialchars($voter_name); ?></strong>
     </div>

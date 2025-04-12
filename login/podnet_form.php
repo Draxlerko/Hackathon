@@ -58,105 +58,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Formulár na zadanie podnetu</title>
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: 'Segoe UI', sans-serif;
-            background: linear-gradient(135deg, #3A59D1, #3D90D7);
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-        .form-container {
-            background: #fff;
-            padding: 2rem;
-            border-radius: 16px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-            text-align: center;
-            width: 100%;
-            max-width: 400px;
-        }
-        .form-container h2 {
-            margin-bottom: 1rem;
-            color: #3A59D1;
-        }
-        .form-container label {
-            display: block;
-            margin: 0.5rem 0 0.2rem;
-            font-weight: bold;
-            color: #555;
-        }
-        .form-container input[type="text"],
-        .form-container textarea,
-        .form-container select {
-            width: calc(100% - 20px);
-            padding: 0.8rem 10px;
-            margin-bottom: 1rem;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            font-size: 1rem;
-        }
-        .form-container textarea {
-            resize: none;
-            height: 100px;
-        }
-        .form-container button {
-            background: #3A59D1;
-            color: #fff;
-            border: none;
-            padding: 0.8rem 1.5rem;
-            font-size: 1rem;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: background 0.3s ease, transform 0.2s ease;
-            width: 100%;
-        }
-        .form-container button:hover {
-            background: #2f47aa;
-            transform: translateY(-3px);
-        }
-
-        /* Modal styles */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-        }
-        .modal-content {
-            background: #fff;
-            padding: 2rem;
-            border-radius: 16px;
-            text-align: center;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-        }
-        .modal-content h3 {
-            color: #3A59D1;
-            margin-bottom: 1rem;
-        }
-        .modal-content button {
-            background: #3A59D1;
-            color: #fff;
-            border: none;
-            padding: 0.8rem 1.5rem;
-            font-size: 1rem;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: background 0.3s ease, transform 0.2s ease;
-        }
-        .modal-content button:hover {
-            background: #2f47aa;
-            transform: translateY(-3px);
-        }
-    </style>
+    <link rel="stylesheet" href="podnet_form.css">
 </head>
 <body>
     <div class="form-container">
@@ -183,6 +85,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             </select>
             
             <button type="submit">Odoslať podnet</button>
+            <!-- Tlačidlo na návrat do usermenu -->
+            <a href="user_menu.php" class="back-button">Späť do menu</a>
         </form>
     </div>
 

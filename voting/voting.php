@@ -1,29 +1,25 @@
 <?php
 
+session_start();
 require '../cabinet/db.php'; // Pripojenie k databáze cez db.php
+
+// Skontroluje, či je používateľ prihlásený
+if (!isset($_SESSION['user'])) {
+    header("Location: ../login/login.php");
+    exit();
+}
+
+// Získa meno prihláseného používateľa zo session
+$voter_name = $_SESSION['user']['meno'];
+$voter_id = $_SESSION['user']['id'];
 
 // Získanie parametrov z URL
 $id = $_GET['id'] ?? null;
 $title = $_GET['title'] ?? null;
-$voter_id = $_GET['voter_id'] ?? null;
 
 // Kontrola, či sú parametre nastavené
-if (!$id || !$title || !$voter_id) {
+if (!$id || !$title) {
     die("Chyba: Neplatné údaje o hlasovaní.");
-}
-
-// Načítanie mena prihláseného používateľa z databázy
-$sql = "SELECT meno FROM obcan WHERE id = ?";
-$stmt = $conn->prepare($sql);
-$stmt->bind_param("i", $voter_id);
-$stmt->execute();
-$result = $stmt->get_result();
-
-if ($result->num_rows > 0) {
-    $voter = $result->fetch_assoc();
-    $voter_name = $voter['meno'];
-} else {
-    die("Chyba: Používateľ s daným ID neexistuje.");
 }
 
 // Kontrola, či už občan hlasoval

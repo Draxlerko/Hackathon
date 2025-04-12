@@ -92,79 +92,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rezervácia na úrad</title>
-    <style>
-        body {
-            font-family: 'Segoe UI', sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f5f5f5;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-        }
-
-        .container {
-            background-color: white;
-            border-radius: 16px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-            padding: 20px;
-            width: 90%;
-            max-width: 500px;
-        }
-
-        h1 {
-            font-size: 1.5rem;
-            color: #3A59D1;
-            text-align: center;
-            margin-bottom: 20px;
-        }
-
-        .success {
-            color: #2ecc71;
-            text-align: center;
-            margin-bottom: 10px;
-        }
-
-        .error {
-            color: #e74c3c;
-            text-align: center;
-            margin-bottom: 10px;
-        }
-
-        label {
-            font-weight: bold;
-            color: #3A59D1;
-            display: block;
-            margin-top: 10px;
-        }
-
-        select, input[type="date"], input[type="time"], textarea, button {
-            width: 100%;
-            padding: 10px;
-            margin-top: 5px;
-            border-radius: 8px;
-            border: 1px solid #ccc;
-            font-size: 1rem;
-            box-sizing: border-box;
-        }
-
-        button {
-            background-color: #3A59D1;
-            color: white;
-            border: none;
-            cursor: pointer;
-            font-weight: bold;
-            transition: background-color 0.3s ease;
-        }
-
-        button:hover {
-            background-color: #2f47aa;
-        }
-    </style>
+    <link rel="stylesheet" href="reservation.css">
 </head>
 <body>
-    <div class="container">
+    <div class="reservation-container">
         <h1>Rezervácia na úrad</h1>
         <p><strong>Prihlásený používateľ:</strong> <?= htmlspecialchars($meno) ?> <?= htmlspecialchars($priezvisko) ?></p>
         <?php if ($success): ?>
@@ -195,8 +126,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <label for="dovod">Dôvod návštevy:</label>
             <textarea id="dovod" name="dovod" required></textarea>
 
-            <button type="submit">Rezervovať</button>
+            <button type="submit" class="reserve-button">Rezervovať</button>
         </form>
+        <!-- Tlačidlo na návrat do usermenu -->
+        <a href="user_menu.php" class="back-button">Späť do menu</a>
     </div>
 </body>
 </html>

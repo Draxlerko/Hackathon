@@ -1,4 +1,3 @@
-
 <?php
 session_start();
 
@@ -8,15 +7,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $password = ""; 
     $dbname = "prvy_proof"; 
 
-    
     $conn = new mysqli($servername, $username, $password, $dbname);
 
-   
     if ($conn->connect_error) {
         die("Connection failed: " . $conn->connect_error);
     }
 
-    
     $meno = $_POST['meno'];
     $heslo = $_POST['heslo'];
 
@@ -61,6 +57,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             display: flex;
             justify-content: center;
             align-items: center;
+            position: relative;
         }
         .login-container {
             background: #fff;
@@ -108,9 +105,28 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             font-weight: bold;
             margin-top: 1rem;
         }
+        .back-button {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: linear-gradient(135deg, #1E3C72, #2A5298);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            text-decoration: none;
+            transition: background 0.3s ease, transform 0.2s ease;
+        }
+        .back-button:hover {
+            background: linear-gradient(135deg, #2A5298, #1E3C72);
+            transform: translateY(-3px);
+        }
     </style>
 </head>
 <body>
+    <a href="../login/login.php" class="back-button">Späť</a>
     <div class="login-container">
         <h2>Admin Prihlásenie</h2>
         <form method="post" action="admin_login.php">

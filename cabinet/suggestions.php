@@ -6,10 +6,11 @@ if ($conn->connect_error) {
     die("Database connection failed: " . $conn->connect_error);
 }
 
-// Fetch data from the 'podnet' table
-$sql = "SELECT p.id, p.nazov AS title, p.text AS description, p.datum AS created_at, p.stav_id, s.nazov_stavu 
+// Fetch suggestions from the 'podnet' table, including those with NULL 'stav_id'
+$sql = "SELECT p.id, p.nazov AS title, p.text AS description, p.datum AS created_at, 
+               p.stav_id, COALESCE(s.nazov_stavu, 'Nepriradený') AS nazov_stavu
         FROM podnet p
-        JOIN stav s ON p.stav_id = s.id";
+        LEFT JOIN stav s ON p.stav_id = s.id";
 $result = $conn->query($sql);
 
 // Debugging: Check if the query failed
@@ -21,56 +22,48 @@ if (!$result) {
 $status_sql = "SELECT id, nazov_stavu FROM stav";
 $status_result = $conn->query($status_sql);
 
-// Debugging: Check if the status query failed
-if (!$status_result) {
-    die("Error in SQL query for statuses: " . $conn->error);
-}
-
 // Store statuses in an array
 $statuses = [];
-while ($status_row = $status_result->fetch_assoc()) {
-    $statuses[] = $status_row;
+if ($status_result) {
+    while ($status_row = $status_result->fetch_assoc()) {
+        $statuses[] = $status_row;
+    }
 }
 
-// Handle form submission to update the status
+// Handle form submissions
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Update suggestion status
     if (isset($_POST['podnet_id'], $_POST['stav_id'])) {
         $podnet_id = intval($_POST['podnet_id']);
         $stav_id = intval($_POST['stav_id']);
 
-        // Update the status of the suggestion
         $update_sql = "UPDATE podnet SET stav_id = ? WHERE id = ?";
         $stmt = $conn->prepare($update_sql);
         $stmt->bind_param("ii", $stav_id, $podnet_id);
 
         if ($stmt->execute()) {
-            // Refresh the page to reflect the changes
             header("Location: " . $_SERVER['PHP_SELF']);
             exit;
         } else {
-            echo "<p>Chyba pri aktualizácii statusu: " . $conn->error . "</p>";
+            echo "<p>Error updating status: " . $conn->error . "</p>";
         }
-
         $stmt->close();
     }
 
-    // Handle deletion of a suggestion
+    // Delete suggestion
     if (isset($_POST['delete_podnet_id'])) {
         $delete_podnet_id = intval($_POST['delete_podnet_id']);
 
-        // Delete the suggestion from the database
         $delete_sql = "DELETE FROM podnet WHERE id = ?";
         $delete_stmt = $conn->prepare($delete_sql);
         $delete_stmt->bind_param("i", $delete_podnet_id);
 
         if ($delete_stmt->execute()) {
-            // Refresh the page to reflect the changes
             header("Location: " . $_SERVER['PHP_SELF']);
             exit;
         } else {
-            echo "<p>Chyba pri odstraňovaní podnetu: " . $conn->error . "</p>";
+            echo "<p>Error deleting suggestion: " . $conn->error . "</p>";
         }
-
         $delete_stmt->close();
     }
 }
@@ -94,7 +87,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         .container {
             max-width: 900px;
             margin: 0 auto;
-            background-color: #f9f9f9;
+            background-color: #fff;
             color: #333;
             border-radius: 12px;
             padding: 20px;
@@ -113,7 +106,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             border-radius: 8px;
             padding: 15px;
             margin-bottom: 15px;
-            background-color: #fff;
+            background-color: #f9f9f9;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
         }
 
@@ -173,16 +166,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         .delete-submit {
             background-color: #D13A3A;
             color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 5px;
-            padding: 8px 15px;
-            font-size: 1rem;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
         }
 
         .delete-submit:hover {
@@ -197,32 +180,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         .back-button {
-            position: absolute;
-            top: 10px; /* Adjusted to align with the white container */
-            left: 10px; /* Adjusted to align with the white container */
-            padding: 5px 10px; /* Made the button smaller */
+            display: inline-block;
+            margin-bottom: 20px;
+            padding: 10px 20px;
             background-color: #3A59D1;
             color: white;
             text-decoration: none;
-            font-size: 0.9rem; /* Reduced font size */
+            font-size: 1rem;
             font-weight: bold;
-            border-radius: 4px; /* Slightly smaller border radius */
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Reduced shadow size */
+            border-radius: 5px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
             transition: background-color 0.3s ease, transform 0.2s ease;
-            z-index: 10; /* Ensure it stays above other elements */
         }
 
         .back-button:hover {
             background-color: #2f47aa;
-            transform: translateY(-1px); /* Slightly reduced hover effect */
+            transform: translateY(-2px);
         }
     </style>
 </head>
 <body>
-    <div class="container" style="position: relative;">
+    <div class="container">
         <a href="cabinet_menu.php" class="back-button">← Späť</a>
         <div class="title">Podnety</div>
-        <?php if ($result->num_rows > 0): ?>
+        <?php if ($result && $result->num_rows > 0): ?>
             <?php while($row = $result->fetch_assoc()): ?>
                 <div class="suggestion">
                     <div class="suggestion-title"><?php echo htmlspecialchars($row['title']); ?></div>
@@ -242,12 +223,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     </form>
                     <form method="POST" class="status-form" style="display: inline;">
                         <input type="hidden" name="delete_podnet_id" value="<?php echo $row['id']; ?>">
-                        <button type="submit" class="delete-submit">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white" width="16px" height="16px" style="vertical-align: middle; margin-right: 5px;">
-                                <path d="M3 6h18v2H3V6zm2 3h14v12c0 1.1-.9 2-2 2H7c-1.1 0-2-.9-2-2V9zm3 2v8h2v-8H8zm4 0v8h2v-8h-2zm4 0v8h2v-8h-2zM9 4h6v2H9V4z"/>
-                            </svg>
-                            Odstrániť
-                        </button>
+                        <button type="submit" class="delete-submit">Odstrániť</button>
                     </form>
                 </div>
             <?php endwhile; ?>

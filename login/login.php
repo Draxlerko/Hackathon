@@ -138,7 +138,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <input type="text" id="meno" name="meno" required>
             <label for="priezvisko">Priezvisko:</label>
             <input type="text" id="priezvisko" name="priezvisko" required>
-            <label type="text">Si admin? Prihlás sa <a href="cabinet/admin_login.php">Sem</a></label>
             <button type="submit">Prihlásiť sa</button>
         </form>
         <?php if (isset($error)): ?>

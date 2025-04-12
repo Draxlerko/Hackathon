@@ -162,6 +162,11 @@ include 'navbar.php';
                         </form>
                     </div>
                 </div>
+            </div><br><br>
+            <div class="text-center">
+                <h3>Platba cez QR kód</h3>
+                <p>Pre rýchlu platbu naskenujte tento QR kód pomocou vašej bankovej aplikácie:</p>
+                <img src="Rickrolling_QR_code.png" alt="QR kód"  style="width: 200px; height: 200px; margin: 20px auto;">
             </div>
         </div>
         <div class="col-lg-2">

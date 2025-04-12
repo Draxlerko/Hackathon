@@ -7,6 +7,7 @@
         <a href="index.php" class="navbar-link active">Domov</a>
         <a href="#" class="navbar-link">O nás</a>
         <a href="#" class="navbar-link">Úradné tlačivá</a>
+        <a href="feedback.php" class="navbar-link">Spätná väzba</a>
         <a href="paygate.php" class="navbar-link">Platobná brána</a>
         <a href="login/login.php" class="navbar-link">
             <img src="assets/icon/user.png" alt="User" class="navbar-logo">Profil

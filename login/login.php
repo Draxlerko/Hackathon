@@ -104,9 +104,33 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             font-weight: bold;
             margin-top: 1rem;
         }
+        .settings-icon {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            width: 30px;
+            height: 30px;
+            cursor: pointer;
+        }
+        .settings-icon svg {
+            width: 100%;
+            height: 100%;
+            fill: #fff;
+            transition: transform 0.3s ease;
+        }
+        .settings-icon:hover svg {
+            transform: rotate(90deg);
+        }
     </style>
 </head>
 <body>
+    <!-- Wrench ikonka -->
+    <a href="../cabinet/admin_login.php" class="settings-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M22.7 19.3l-4.2-4.2c.5-1 .8-2.1.8-3.1 0-3.9-3.1-7-7-7-1.1 0-2.1.3-3.1.8L4.7 1.3C4.3.9 3.7.9 3.3 1.3l-2 2c-.4.4-.4 1 0 1.4l5.5 5.5c-.5 1-.8 2.1-.8 3.1 0 3.9 3.1 7 7 7 1.1 0 2.1-.3 3.1-.8l4.2 4.2c.4.4 1 .4 1.4 0l2-2c.4-.4.4-1 0-1.4zM9 12c0-1.7 1.3-3 3-3s3 1.3 3 3-1.3 3-3 3-3-1.3-3-3z"/>
+        </svg>
+    </a>
+
     <div class="login-container">
         <h2>Prihlásenie</h2>
         <form method="post" action="login.php">

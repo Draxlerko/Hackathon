@@ -14,8 +14,47 @@ if (!isset($_SESSION['user'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hlavné Menu</title>
-    <!-- Napojenie na externý CSS súbor -->
     <link rel="stylesheet" href="user_menu.css">
+    <style>
+        .menu-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .menu-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 200px;
+            height: 150px;
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            text-decoration: none;
+            color: #3A59D1;
+            font-size: 1.2rem;
+            font-weight: bold;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            text-align: center;
+        }
+
+        .menu-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .menu-item-icon {
+            width: 50px;
+            height: 50px;
+            background-color: #3A59D1;
+            border-radius: 50%;
+            margin-bottom: 10px;
+        }
+    </style>
 </head>
 <body>
     <div class="header">Hlavné Menu</div>
@@ -37,7 +76,52 @@ if (!isset($_SESSION['user'])) {
             <div class="menu-item-icon"></div>
             <span>Platby</span>
         </a>
+        <a href="profil.php" class="menu-item">
+            <div class="menu-item-icon"></div>
+            <span>Profil</span>
+        </a>
     </div>
-    <a href="logout.php" class="logout-button">Odhlásiť sa</a>
+    <div class="action-buttons" style="display: flex; justify-content: center; gap: 10px; margin-top: 60px;">
+        <a href="logout.php" style="
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 150px;
+            height: 50px;
+            background-color: white;
+            color: #3A59D1;
+            text-decoration: none;
+            font-size: 1rem;
+            font-weight: bold;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            text-align: center;
+            border: 2px solid #3A59D1;
+        " onmouseover="this.style.backgroundColor='#3A59D1'; this.style.color='white';" onmouseout="this.style.backgroundColor='white'; this.style.color='#3A59D1';">
+            Odhlásiť sa
+        </a>
+        <a href="index_log.php" style="
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 150px;
+            height: 50px;
+            background-color: white;
+            color: #3A59D1;
+            text-decoration: none;
+            font-size: 1rem;
+            font-weight: bold;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            text-align: center;
+            border: 2px solid #3A59D1;
+        " onmouseover="this.style.backgroundColor='#3A59D1'; this.style.color='white';" onmouseout="this.style.backgroundColor='white'; this.style.color='#3A59D1';">
+            Vrátiť sa späť
+        </a>
+    </div>
 </body>
 </html>

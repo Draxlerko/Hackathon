@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-// Check if the user is logged in
+// Skontroluj, či je používateľ prihlásený
 if (!isset($_SESSION['user'])) {
     header("Location: login.php");
     exit();
@@ -113,7 +113,8 @@ if (!isset($_SESSION['user'])) {
             <div class="menu-item-icon"></div>
             <span>Podnety</span>
         </a>
-        <a href="reservations.php" class="menu-item">
+        <!-- Odkaz na reservation.php s prenesením mena a priezviska -->
+        <a href="../login/reservation.php?meno=<?php echo urlencode($_SESSION['user']['meno']); ?>&priezvisko=<?php echo urlencode($_SESSION['user']['priezvisko']); ?>" class="menu-item">
             <div class="menu-item-icon"></div>
             <span>Rezervácie</span>
         </a>

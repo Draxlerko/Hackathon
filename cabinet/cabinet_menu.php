@@ -103,6 +103,10 @@
             <div class="menu-item-icon"></div>
             <span>Prehľad feedbacku</span>
         </a>
+        <a href="reservationcheck.php" class="menu-item">
+            <div class="menu-item-icon"></div>
+            <span>Registrácie</span>
+        </a>
         <a href="admin_login.php" class="logout-button">Odhlásiť Admina</a>
     </div>
 </body>

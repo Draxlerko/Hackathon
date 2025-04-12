@@ -1,14 +1,31 @@
 <!-- filepath: c:\xampp\htdocs\hackathon\Hackathon\reservation.php -->
 <?php
-include 'cabinet/db.php'; // Pripojenie k databáze
+session_start();
+include '../cabinet/db.php'; // Opravená cesta k pripojeniu databázy
 
 $success = '';
 $error = '';
 
+// Skontroluj, či je používateľ prihlásený
+if (!isset($_SESSION['user'])) {
+    header("Location: ../login/login.php");
+    exit();
+}
+
+// Získanie mena a priezviska používateľa zo session
+$meno = $_SESSION['user']['meno'];
+$priezvisko = $_SESSION['user']['priezvisko'];
+$id_pouzivatela = $_SESSION['user']['id'];
+
 // Načítanie obcí (úradov)
 $query = "SELECT id, nazov FROM obec";
 $result = $conn->query($query);
-$obce = $result->fetch_all(MYSQLI_ASSOC);
+
+if ($result) {
+    $obce = $result->fetch_all(MYSQLI_ASSOC);
+} else {
+    $error = "Chyba pri načítaní obcí: " . $conn->error;
+}
 
 // Načítanie dostupných časov pre vybraný úrad
 $selected_obec = isset($_POST['obec']) ? intval($_POST['obec']) : null;
@@ -48,10 +65,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $office_hour_id = $stmt->get_result()->fetch_assoc()['id'];
             }
 
-            // Vloženie rezervácie
-            $insert_query = "INSERT INTO reservations (office_hour_id, dovod) VALUES (?, ?)";
+            // Vloženie rezervácie s menom, priezviskom a ID používateľa
+            $insert_query = "INSERT INTO reservations (office_hour_id, dovod, meno, priezvisko, id_pouzivatela) VALUES (?, ?, ?, ?, ?)";
             $stmt = $conn->prepare($insert_query);
-            $stmt->bind_param("is", $office_hour_id, $dovod);
+            $stmt->bind_param("isssi", $office_hour_id, $dovod, $meno, $priezvisko, $id_pouzivatela);
 
             if ($stmt->execute()) {
                 // Aktualizácia dostupnosti
@@ -149,6 +166,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <body>
     <div class="container">
         <h1>Rezervácia na úrad</h1>
+        <p><strong>Prihlásený používateľ:</strong> <?= htmlspecialchars($meno) ?> <?= htmlspecialchars($priezvisko) ?></p>
         <?php if ($success): ?>
             <p class="success"><?= htmlspecialchars($success) ?></p>
         <?php elseif ($error): ?>
@@ -159,11 +177,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <label for="obec">Vyberte obec:</label>
             <select id="obec" name="obec" required>
                 <option value="">-- Vyberte obec --</option>
-                <?php foreach ($obce as $obec): ?>
-                    <option value="<?= $obec['id'] ?>" <?= $selected_obec == $obec['id'] ? 'selected' : '' ?>>
-                        <?= htmlspecialchars($obec['nazov']) ?>
-                    </option>
-                <?php endforeach; ?>
+                <?php if (!empty($obce)): ?>
+                    <?php foreach ($obce as $obec): ?>
+                        <option value="<?= $obec['id'] ?>" <?= $selected_obec == $obec['id'] ? 'selected' : '' ?>>
+                            <?= htmlspecialchars($obec['nazov']) ?>
+                        </option>
+                    <?php endforeach; ?>
+                <?php endif; ?>
             </select>
 
             <label for="date">Dátum:</label>

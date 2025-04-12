@@ -6,17 +6,38 @@ error_reporting(E_ALL);
 
 session_start();
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $username = $_POST['username'];
-    $password = $_POST['password'];
+    $servername = "localhost";
+    $username = "root"; // nastav meno svojho používateľa databázy
+    $password = ""; // nastav heslo pre svoju databázu
+    $dbname = "prvy_proof"; // názov tvojej databázy
 
-    // Overenie používateľa (príklad)
-    if ($username === 'admin' && $password === 'password') {
-        $_SESSION['user'] = $username;
-        header('Location: ' . $_SERVER['HTTP_REFERER']); // Presmerovanie späť na pôvodnú stránku
-        exit;
-    } else {
-        $error = "Nesprávne prihlasovacie údaje.";
+    // Vytvorenie pripojenia
+    $conn = new mysqli($servername, $username, $password, $dbname);
+
+    // Skontroluj pripojenie
+    if ($conn->connect_error) {
+        die("Connection failed: " . $conn->connect_error);
     }
+
+    // Bezpečné prihlásenie používateľa
+    $meno = $_POST['meno'];
+    $priezvisko = $_POST['priezvisko'];
+
+    $sql = "SELECT * FROM obcan WHERE meno = ? AND priezvisko = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("ss", $meno, $priezvisko);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    if ($result->num_rows > 0) {
+        $_SESSION['user'] = $result->fetch_assoc(); // ulož prihláseného používateľa do session
+        header("Location: user_menu.php"); // presmeruj na hlavné menu
+        exit();
+    } else {
+        $error = "Nesprávne meno alebo priezvisko!";
+    }
+
+    $conn->close();
 }
 ?>
 
@@ -113,11 +134,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <div class="login-container">
         <h2>Prihlásenie</h2>
         <form method="post" action="login.php">
-            <label for="username">Používateľské meno:</label>
-            <input type="text" id="username" name="username" required>
-            <label for="password">Heslo:</label>
-            <input type="password" id="password" name="password" required>
-            <label type="text">Si admin? Prihlás sa <a href="cabinet\admin_login.php">Sem</a></label>
+            <label for="meno">Meno:</label>
+            <input type="text" id="meno" name="meno" required>
+            <label for="priezvisko">Priezvisko:</label>
+            <input type="text" id="priezvisko" name="priezvisko" required>
+            <label type="text">Si admin? Prihlás sa <a href="cabinet/admin_login.php">Sem</a></label>
             <button type="submit">Prihlásiť sa</button>
         </form>
         <?php if (isset($error)): ?>

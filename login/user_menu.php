@@ -117,7 +117,7 @@ if (!isset($_SESSION['user'])) {
             <div class="menu-item-icon"></div>
             <span>Rezervácie</span>
         </a>
-        <a href="voting/votingmenu.php" class="menu-item">
+        <a href="../voting/votingmenu.php?meno=<?php echo urlencode($_SESSION['user']['meno']); ?>&id=<?php echo $_SESSION['user']['id']; ?>" class="menu-item">
             <div class="menu-item-icon"></div>
             <span>Anketa</span>
         </a>

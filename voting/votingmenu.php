@@ -1,5 +1,16 @@
 <?php
+session_start();
 require '../cabinet/db.php'; // Pripojenie k databáze cez db.php
+
+// Skontroluje, či je používateľ prihlásený
+if (!isset($_SESSION['user'])) {
+    header("Location: ../login/login.php");
+    exit();
+}
+
+// Získa meno prihláseného používateľa zo session
+$voter_name = $_SESSION['user']['meno'];
+$voter_id = $_SESSION['user']['id'];
 
 // Načíta hlasovania z DB
 $sql = "SELECT id, nazov AS title, info FROM hlasovanie";
@@ -27,18 +38,6 @@ if ($result->num_rows > 0) {
         }
         $votings[] = $row;
     }
-}
-
-// Náhodný výber občana z tabuľky `obcan`
-$sql = "SELECT id, meno FROM obcan ORDER BY RAND() LIMIT 1";
-$result = $conn->query($sql);
-
-if ($result->num_rows > 0) {
-    $voter = $result->fetch_assoc();
-    $voter_id = $voter['id'];
-    $voter_name = $voter['meno'];
-} else {
-    die("Chyba: Neboli nájdení žiadni občania v databáze.");
 }
 ?>
 
@@ -105,20 +104,19 @@ if ($result->num_rows > 0) {
             font-size: 14px;
             font-weight: bold;
             color: #3A59D1;
-            background-color:rgb(255, 255, 255);
-            border: 2px solid black;;
+            background-color: rgb(255, 255, 255);
+            border: 2px solid black;
             border-radius: 5px;
             cursor: pointer;
             transition: background-color 0.3s ease;
             display: block;
             margin-left: auto;
             margin-right: auto;
-            
         }
         .info-button:hover {
             transform: translateY(-5px);
             color: black;
-            background-color:rgb(125, 151, 254);
+            background-color: rgb(125, 151, 254);
         }
         .info-section {
             display: none;
